@@ -1,4 +1,4 @@
-package com.resqlity.orm.models;
+package com.resqlity.orm.models.querymodels;
 
 public abstract class BaseModel {
     private String apiKey;

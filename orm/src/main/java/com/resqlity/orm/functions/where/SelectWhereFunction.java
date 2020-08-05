@@ -3,8 +3,8 @@ package com.resqlity.orm.functions.where;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.Decision;
-import com.resqlity.orm.queries.SelectQuery;
-import com.resqlity.orm.queryobjects.SelectColumn;
+import com.resqlity.orm.queries.select.SelectQuery;
+import com.resqlity.orm.queryobjects.select.SelectColumn;
 
 public class SelectWhereFunction extends WhereFunction {
     SelectQuery query;

@@ -1,16 +1,16 @@
-package com.resqlity.orm.queryobjects;
+package com.resqlity.orm.queryobjects.select;
 
-public class UpdateQueryObject {
+public class SelectColumn {
     private String tableName;
     private String tableSchema;
     private String columnName;
-    private Object value;
+    private String columnAlias;
 
-    public UpdateQueryObject(String tableName, String tableSchema, String columnName, Object value) {
+    public SelectColumn(String tableName, String tableSchema, String columnName, String columnAlias) {
         this.tableName = tableName;
         this.tableSchema = tableSchema;
         this.columnName = columnName;
-        this.value = value;
+        this.columnAlias = columnAlias;
     }
 
     public String getTableName() {
@@ -25,7 +25,7 @@ public class UpdateQueryObject {
         return columnName;
     }
 
-    public Object getValue() {
-        return value;
+    public String getColumnAlias() {
+        return columnAlias;
     }
 }

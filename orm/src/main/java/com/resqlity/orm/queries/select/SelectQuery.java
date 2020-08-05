@@ -1,10 +1,11 @@
-package com.resqlity.orm.queries;
+package com.resqlity.orm.queries.select;
 
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.functions.where.SelectWhereFunction;
-import com.resqlity.orm.models.SelectModel;
-import com.resqlity.orm.queryobjects.SelectColumn;
+import com.resqlity.orm.models.querymodels.SelectModel;
+import com.resqlity.orm.queries.BaseQuery;
+import com.resqlity.orm.queryobjects.select.SelectColumn;
 
 import java.util.List;
 

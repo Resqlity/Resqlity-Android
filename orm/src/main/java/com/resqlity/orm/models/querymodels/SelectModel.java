@@ -1,10 +1,10 @@
-package com.resqlity.orm.models;
+package com.resqlity.orm.models.querymodels;
 
 import com.resqlity.orm.models.clausemodels.JoinClauseModel;
 import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.consts.Pagination;
-import com.resqlity.orm.queryobjects.SelectColumn;
+import com.resqlity.orm.queryobjects.select.SelectColumn;
 
 import java.util.ArrayList;
 import java.util.List;
