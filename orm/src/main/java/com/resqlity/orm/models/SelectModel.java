@@ -1,8 +1,8 @@
 package com.resqlity.orm.models;
 
-import com.resqlity.orm.clausemodels.JoinClauseModel;
-import com.resqlity.orm.clausemodels.OrderByClauseModel;
-import com.resqlity.orm.clausemodels.WhereClauseModel;
+import com.resqlity.orm.models.clausemodels.JoinClauseModel;
+import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
+import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.consts.Pagination;
 import com.resqlity.orm.queryobjects.SelectColumn;
 

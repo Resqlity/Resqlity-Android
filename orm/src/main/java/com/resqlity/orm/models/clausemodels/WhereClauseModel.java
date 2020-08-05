@@ -1,8 +1,7 @@
-package com.resqlity.orm.clausemodels;
+package com.resqlity.orm.models.clausemodels;
 
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.Decision;
-import com.resqlity.orm.models.BaseModel;
 
 public class WhereClauseModel {
     private String tableName;

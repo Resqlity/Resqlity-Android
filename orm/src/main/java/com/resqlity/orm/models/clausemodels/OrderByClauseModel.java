@@ -1,4 +1,4 @@
-package com.resqlity.orm.clausemodels;
+package com.resqlity.orm.models.clausemodels;
 
 public class OrderByClauseModel {
     private String tableName;

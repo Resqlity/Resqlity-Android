@@ -1,9 +1,8 @@
 package com.resqlity.orm.functions.where;
 
-import com.resqlity.orm.clausemodels.WhereClauseModel;
+import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.Decision;
-import com.resqlity.orm.queries.BaseQuery;
 import com.resqlity.orm.queries.SelectQuery;
 import com.resqlity.orm.queryobjects.SelectColumn;
 

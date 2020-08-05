@@ -1,4 +1,4 @@
-package com.resqlity.orm.clausemodels;
+package com.resqlity.orm.models.clausemodels;
 
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.JoinType;
