@@ -3,6 +3,7 @@ package com.resqlity.orm;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.examples.SampleClass;
 import com.resqlity.orm.examples.SampleRelation;
+import com.resqlity.orm.queries.DeleteQuery;
 import com.resqlity.orm.queries.SelectQuery;
 import com.resqlity.orm.queries.UpdateQuery;
 
@@ -26,6 +27,10 @@ public class ResqlityContext {
         return new UpdateQuery(obj);
     }
 
+    public DeleteQuery Delete(Class<? extends Object> obj) {
+        return new DeleteQuery(obj);
+    }
+
     public void Foo() throws Exception {
 //        new SelectQuery(SampleClass.class)
 //                .Where("name", "Berkay", Comparator.Equal)
@@ -40,11 +45,15 @@ public class ResqlityContext {
 //                .InnerJoin(SampleRelation.class, "firstName", "name", Comparator.Equal)
 //                .ChildLeftJoin(SampleRelation.class, "parentId", "id", Comparator.Equal)
 //                .Execute();
-        Update(SampleClass.class)
-                .Update("name","Berkay")
-                .Update("lastName","YALÇIN")
-                .Where("name","Ahmet",Comparator.Equal)
-                .And("lastName","YALÇIN",Comparator.Equal)
+//        Update(SampleClass.class)
+//                .Update("name", "Berkay")
+//                .Update("lastName", "YALÇIN")
+//                .Where("name", "Ahmet", Comparator.Equal)
+//                .And("lastName", "YALÇIN", Comparator.Equal)
+//                .Execute();
+        Delete(SampleClass.class)
+                .Where("name", "Berkay", Comparator.Equal)
+                .Or("name", "Ahmet", Comparator.Equal)
                 .Execute();
     }
 

@@ -13,7 +13,7 @@ public class UpdateQuery extends BaseQuery {
 
     public UpdateQuery(Class<?> tableClass) {
         super(tableClass);
-        updateModel = new UpdateModel();
+        updateModel = new UpdateModel("apiKey", getTableName(), getTableSchema());
     }
 
     public UpdateQuery Update(String fieldName, Object value) throws Exception {

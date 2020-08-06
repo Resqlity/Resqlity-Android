@@ -5,49 +5,45 @@ import com.resqlity.orm.enums.Decision;
 import com.resqlity.orm.functions.where.WhereFunction;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 
-public class UpdateWhereFunction extends WhereFunction {
+public class DeleteWhereFunction extends WhereFunction {
+    DeleteQuery query;
 
-    UpdateQuery query;
-
-    public UpdateWhereFunction(WhereClauseModel root, UpdateQuery baseQuery) {
+    public DeleteWhereFunction(WhereClauseModel root, DeleteQuery baseQuery) {
         super(root, baseQuery);
         query = baseQuery;
     }
 
     @Override
-    public UpdateWhereFunction And(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
+    public DeleteWhereFunction And(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
         return Where(fieldName, compareTo, comparator, Decision.AND);
     }
 
     @Override
-    public UpdateWhereFunction Or(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
+    public DeleteWhereFunction Or(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
         return Where(fieldName, compareTo, comparator, Decision.OR);
     }
 
     @Override
-    public UpdateWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
+    public DeleteWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
         query.CompleteWhere();
         return query.Where(fieldName, compareTo, comparator);
     }
 
     @Override
-    protected UpdateWhereFunction Where(String fieldName, Object compareTo, Comparator comparator, Decision decision) throws NoSuchFieldException {
+    protected DeleteWhereFunction Where(String fieldName, Object compareTo, Comparator comparator, Decision decision) throws NoSuchFieldException {
         WhereClauseModel head = model;
         while (head.getInner() != null)
             head = head.getInner();
         head.setDecision(decision);
+
         head.setInner(getWhereClauseModel(query.getTableName(), query.getTableSchema(), query.getPropertyName(fieldName), compareTo, comparator));
         model = head;
         return this;
     }
 
     @Override
-    public UpdateQuery Query() {
+    public DeleteQuery Query() {
         return query;
     }
 
-    public UpdateQuery Update(String fieldName, Object value) throws Exception {
-        query.CompleteWhere();
-        return query.Update(fieldName, value);
-    }
 }

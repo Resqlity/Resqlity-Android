@@ -15,25 +15,12 @@ public class SelectWhereFunction extends WhereFunction {
 
     @Override
     public SelectWhereFunction And(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
-        WhereClauseModel head = model;
-        while (head.getInner() != null)
-            head = head.getInner();
-        head.setDecision(Decision.AND);
-
-        head.setInner(getWhereClauseModel(query.getTableName(), query.getTableSchema(), query.getPropertyName(fieldName), compareTo, comparator));
-        model = head;
-        return this;
+        return Where(fieldName,compareTo,comparator,Decision.AND);
     }
 
     @Override
     public SelectWhereFunction Or(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
-        WhereClauseModel head = model;
-        while (head.getInner() != null)
-            head = head.getInner();
-        head.setDecision(Decision.OR);
-        head.setInner(getWhereClauseModel(query.getTableName(), query.getTableSchema(), query.getPropertyName(fieldName), compareTo, comparator));
-        model = head;
-        return this;
+        return Where(fieldName,compareTo,comparator,Decision.OR);
     }
 
 
@@ -41,6 +28,17 @@ public class SelectWhereFunction extends WhereFunction {
     public SelectWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
         query.CompleteWhere();
         return query.Where(fieldName, compareTo, comparator);
+    }
+
+    @Override
+    protected SelectWhereFunction Where(String fieldName, Object compareTo, Comparator comparator, Decision decision) throws NoSuchFieldException {
+        WhereClauseModel head = model;
+        while (head.getInner() != null)
+            head = head.getInner();
+        head.setDecision(decision);
+        head.setInner(getWhereClauseModel(query.getTableName(), query.getTableSchema(), query.getPropertyName(fieldName), compareTo, comparator));
+        model = head;
+        return this;
     }
 
     @Override
