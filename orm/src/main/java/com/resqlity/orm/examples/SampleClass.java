@@ -1,4 +1,4 @@
-package com.resqlity.orm;
+package com.resqlity.orm.examples;
 
 import com.resqlity.orm.annotations.ResqlityProperty;
 import com.resqlity.orm.annotations.ResqlityTable;

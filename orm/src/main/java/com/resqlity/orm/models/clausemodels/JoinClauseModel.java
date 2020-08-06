@@ -3,6 +3,7 @@ package com.resqlity.orm.models.clausemodels;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.JoinType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JoinClauseModel {
@@ -53,6 +54,8 @@ public class JoinClauseModel {
     }
 
     public List<JoinClauseModel> getJoins() {
+        if(joins==null)
+            joins=new ArrayList<>();
         return joins;
     }
 

@@ -2,7 +2,9 @@ package com.resqlity.orm.queries;
 
 import com.resqlity.orm.annotations.ResqlityProperty;
 import com.resqlity.orm.annotations.ResqlityTable;
+import com.resqlity.orm.functions.join.JoinFunction;
 import com.resqlity.orm.functions.orderBy.OrderByFunction;
+import com.resqlity.orm.models.clausemodels.JoinClauseModel;
 import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.enums.Comparator;
@@ -27,6 +29,7 @@ public abstract class BaseQuery {
     }
 
     protected WhereClauseModel whereRootClause;
+    protected JoinClauseModel lastJoinClause;
 
 
     public abstract WhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException;
@@ -35,9 +38,39 @@ public abstract class BaseQuery {
 
     public abstract OrderByFunction OrderBy(String field, boolean isAsc) throws NoSuchFieldException;
 
+    public abstract JoinFunction InnerJoin(Class<?> joinClass,
+                                           String fieldName,
+                                           String parentFieldName,
+                                           Comparator comparator) throws NoSuchFieldException;
+
+    public abstract JoinFunction LeftJoin(Class<?> joinClass,
+                                          String fieldName,
+                                          String parentFieldName,
+                                          Comparator comparator) throws NoSuchFieldException;
+
+    public abstract JoinFunction RightJoin(Class<?> joinClass,
+                                           String fieldName,
+                                           String parentFieldName,
+                                           Comparator comparator) throws NoSuchFieldException;
+
+    public abstract JoinFunction LeftOuterJoin(Class<?> joinClass,
+                                               String fieldName,
+                                               String parentFieldName,
+                                               Comparator comparator) throws NoSuchFieldException;
+
+    public abstract JoinFunction RightOuterJoin(Class<?> joinClass,
+                                                String fieldName,
+                                                String parentFieldName,
+                                                Comparator comparator) throws NoSuchFieldException;
+
+
+
+
     protected abstract void CompleteWhere();
 
     protected abstract void CompleteOrderBy();
+
+    protected abstract void CompleteJoin();
 
     public abstract void Execute();
 

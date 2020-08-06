@@ -2,7 +2,10 @@ package com.resqlity.orm.queries;
 
 import com.resqlity.orm.consts.Pagination;
 import com.resqlity.orm.enums.Comparator;
+import com.resqlity.orm.enums.JoinType;
+import com.resqlity.orm.functions.join.JoinFunction;
 import com.resqlity.orm.functions.orderBy.OrderByFunction;
+import com.resqlity.orm.models.clausemodels.JoinClauseModel;
 import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.models.querymodels.SelectModel;
@@ -15,7 +18,7 @@ public class SelectQuery extends BaseQuery {
 
     public SelectQuery(Class<?> tableClass) {
         super(tableClass);
-        selectModel = new SelectModel("", "", "");
+        selectModel = new SelectModel("apikey", getTableName(), getTableSchema());
     }
 
     /**
@@ -53,6 +56,42 @@ public class SelectQuery extends BaseQuery {
         return OrderBy(getBaseTableClass(), field, isAsc);
     }
 
+    @Override
+    public SelectJoinFunction InnerJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+        return Join(joinClass, fieldName, parentFieldName, comparator, JoinType.INNER);
+    }
+
+    @Override
+    public SelectJoinFunction LeftJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+        return Join(joinClass, fieldName, parentFieldName, comparator, JoinType.LEFT);
+    }
+
+    @Override
+    public SelectJoinFunction RightJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+        return Join(joinClass, fieldName, parentFieldName, comparator, JoinType.RIGHT);
+    }
+
+    @Override
+    public SelectJoinFunction LeftOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+        return Join(joinClass, fieldName, parentFieldName, comparator, JoinType.LEFT_OUTER);
+    }
+
+    @Override
+    public SelectJoinFunction RightOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+        return Join(joinClass, fieldName, parentFieldName, comparator, JoinType.RIGHT_OUTER);
+    }
+
+    private SelectJoinFunction Join(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator, JoinType type) throws NoSuchFieldError, NoSuchFieldException {
+        String tableName = getTableName(joinClass);
+        String tableSchema = getTableSchema(joinClass);
+        String parentColumnName = getPropertyName(parentFieldName);
+        String childColumnName = getPropertyName(joinClass, fieldName);
+        JoinClauseModel joinClauseModel = new JoinClauseModel(tableName, tableSchema, childColumnName, parentColumnName, comparator, type);
+        lastJoinClause = joinClauseModel;
+        return new SelectJoinFunction(this, joinClauseModel, joinClass);
+    }
+
+
     public SelectQuery PageBy() {
         return PageBy(1);
     }
@@ -84,8 +123,20 @@ public class SelectQuery extends BaseQuery {
     }
 
     @Override
+    protected void CompleteJoin() {
+        List<JoinClauseModel> joinClauseModels = selectModel.getJoins();
+        joinClauseModels.add(lastJoinClause);
+        selectModel.setJoins(joinClauseModels);
+        lastJoinClause = null;
+    }
+
+    @Override
     public void Execute() {
         CompleteOrderBy();
+        if (whereRootClause != null)
+            CompleteWhere();
+        if (lastJoinClause != null)
+            CompleteJoin();
     }
 
 }
