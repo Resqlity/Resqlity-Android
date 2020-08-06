@@ -13,11 +13,9 @@ public abstract class WhereFunction {
     }
 
 
-    public abstract WhereFunction And(String tableName, String tableSchema, String columnName, Object compareTo, Comparator comparator);
-    public abstract WhereFunction Or(String tableName, String tableSchema, String columnName, Object compareTo, Comparator comparator);
-    public abstract WhereFunction Where(String tableName, String tableSchema, String columnName, Object compareTo, Comparator comparator);
-
-
+    public abstract WhereFunction And(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException;
+    public abstract WhereFunction Or(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException;
+    public abstract WhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException;
     public void Execute(){
         baseQuery.Execute();
     }

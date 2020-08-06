@@ -1,24 +1,31 @@
 package com.resqlity.orm;
 
 import com.resqlity.orm.enums.Comparator;
-import com.resqlity.orm.queries.select.SelectQuery;
-import com.resqlity.orm.queryobjects.select.SelectColumn;
+import com.resqlity.orm.queries.SelectQuery;
 
 public class ResqlityContext {
 
-    public void Foo() {
-        SelectQuery query = new SelectQuery();
-        query
-                .Select(new SelectColumn("", "", "", ""))
-                .Where("", "", "", "", Comparator.IsNull)
-                .And("", "", "", "", Comparator.IsNull)
-                .And("", "", "", "", Comparator.IsNull)
-                .And("", "", "", "", Comparator.IsNull)
-                .And("", "", "", "", Comparator.IsNull)
-                .Or("", "", "", "", Comparator.IsNull)
-                .Where("", "", "", "", Comparator.IsNull)
-                .Select(new SelectColumn("", "", "", ""))
-        .Execute();
+
+    public ResqlityContext() {
+
+        try {
+            Foo();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public SelectQuery Select(Class<?> obj) {
+        return new SelectQuery(obj);
+    }
+
+    public void Foo() throws NoSuchFieldException {
+        new SelectQuery(SampleClass.class)
+                .Where("name","Berkay",Comparator.Equal)
+                .Select("name")
+                .Execute();
 
     }
+
+
 }

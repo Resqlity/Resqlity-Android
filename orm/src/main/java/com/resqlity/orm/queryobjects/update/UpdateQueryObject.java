@@ -1,4 +1,4 @@
-package com.resqlity.orm.queryobjects.update;
+package com.resqlity.orm.update;
 
 public class UpdateQueryObject {
     private String tableName;
