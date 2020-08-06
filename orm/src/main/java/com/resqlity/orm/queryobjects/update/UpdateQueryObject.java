@@ -1,4 +1,6 @@
-package com.resqlity.orm.update;
+package com.resqlity.orm.queryobjects.update;
+
+import androidx.annotation.Nullable;
 
 public class UpdateQueryObject {
     private String tableName;
@@ -27,5 +29,15 @@ public class UpdateQueryObject {
 
     public Object getValue() {
         return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        return obj == this;
     }
 }

@@ -18,7 +18,7 @@ public abstract class OrderByFunction {
 
     public abstract OrderByFunction ThenBy(String field, boolean isAsc) throws NoSuchFieldException;
 
-    public void Execute() {
+    public void Execute() throws Exception {
         baseQuery.Execute();
     }
 

@@ -1,5 +1,7 @@
 package com.resqlity.orm.queryobjects.select;
 
+import androidx.annotation.Nullable;
+
 public class SelectColumn {
     private String tableName;
     private String tableSchema;
@@ -27,5 +29,15 @@ public class SelectColumn {
 
     public String getColumnAlias() {
         return columnAlias;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        return obj==this;
     }
 }

@@ -34,45 +34,39 @@ public abstract class BaseQuery {
 
     public abstract WhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException;
 
-    public abstract OrderByFunction OrderBy(Class<?> tableClass, String field, boolean isAsc) throws NoSuchFieldException;
-
-    public abstract OrderByFunction OrderBy(String field, boolean isAsc) throws NoSuchFieldException;
-
     public abstract JoinFunction InnerJoin(Class<?> joinClass,
                                            String fieldName,
                                            String parentFieldName,
-                                           Comparator comparator) throws NoSuchFieldException;
+                                           Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
 
     public abstract JoinFunction LeftJoin(Class<?> joinClass,
                                           String fieldName,
                                           String parentFieldName,
-                                          Comparator comparator) throws NoSuchFieldException;
+                                          Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
 
     public abstract JoinFunction RightJoin(Class<?> joinClass,
                                            String fieldName,
                                            String parentFieldName,
-                                           Comparator comparator) throws NoSuchFieldException;
+                                           Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
 
     public abstract JoinFunction LeftOuterJoin(Class<?> joinClass,
                                                String fieldName,
                                                String parentFieldName,
-                                               Comparator comparator) throws NoSuchFieldException;
+                                               Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
 
     public abstract JoinFunction RightOuterJoin(Class<?> joinClass,
                                                 String fieldName,
                                                 String parentFieldName,
-                                                Comparator comparator) throws NoSuchFieldException;
+                                                Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
 
 
 
 
     protected abstract void CompleteWhere();
 
-    protected abstract void CompleteOrderBy();
+    protected abstract void CompleteJoin() throws NoSuchMethodException;
 
-    protected abstract void CompleteJoin();
-
-    public abstract void Execute();
+    public abstract void Execute() throws Exception;
 
     protected ResqlityProperty getProperty(Class<?> tableClass, String fieldName) throws NoSuchFieldException {
         return tableClass.getDeclaredField(fieldName).getAnnotation(ResqlityProperty.class);

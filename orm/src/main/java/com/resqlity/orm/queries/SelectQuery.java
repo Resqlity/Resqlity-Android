@@ -40,7 +40,6 @@ public class SelectQuery extends BaseQuery {
         return new SelectWhereFunction(root, this);
     }
 
-    @Override
     public SelectOrderByFunction OrderBy(Class<?> tableClass, String field, boolean isAsc) throws NoSuchFieldException {
         if (selectModel.getOrderBy() == null) {
             selectModel.setOrderBy(new OrderByClauseModel(getTableName(tableClass), getTableSchema(tableClass), getPropertyName(field), isAsc));
@@ -51,7 +50,6 @@ public class SelectQuery extends BaseQuery {
         return func;
     }
 
-    @Override
     public SelectOrderByFunction OrderBy(String field, boolean isAsc) throws NoSuchFieldException {
         return OrderBy(getBaseTableClass(), field, isAsc);
     }

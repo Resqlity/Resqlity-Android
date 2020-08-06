@@ -17,7 +17,7 @@ public abstract class WhereFunction {
     public abstract WhereFunction Or(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException;
     public abstract WhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException;
     public abstract BaseQuery Query();
-    public void Execute(){
+    public void Execute() throws Exception {
         baseQuery.Execute();
     }
 

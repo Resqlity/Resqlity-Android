@@ -43,7 +43,7 @@ public abstract class JoinFunction {
 
     public abstract BaseQuery Query();
 
-    public void Execute() {
+    public void Execute() throws Exception {
         baseQuery.Execute();
     }
 
