@@ -1,5 +1,6 @@
 package com.resqlity.orm.queries;
 
+import com.resqlity.orm.consts.Pagination;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.functions.orderBy.OrderByFunction;
 import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
@@ -42,7 +43,7 @@ public class SelectQuery extends BaseQuery {
             selectModel.setOrderBy(new OrderByClauseModel(getTableName(tableClass), getTableSchema(tableClass), getPropertyName(field), isAsc));
             return new SelectOrderByFunction(this, selectModel.getOrderBy());
         }
-        SelectOrderByFunction func = new SelectOrderByFunction(this, orderByRootClause);
+        SelectOrderByFunction func = new SelectOrderByFunction(this, selectModel.getOrderBy());
         func.ThenBy(tableClass, field, isAsc);
         return func;
     }
@@ -52,19 +53,39 @@ public class SelectQuery extends BaseQuery {
         return OrderBy(getBaseTableClass(), field, isAsc);
     }
 
+    public SelectQuery PageBy() {
+        return PageBy(1);
+    }
+
+    public SelectQuery PageBy(int page) {
+        return PageBy((page - 1) * Pagination.PageSize, Pagination.PageSize);
+    }
+
+    public SelectQuery PageBy(int page, long pageSize) {
+        return PageBy((page - 1) * pageSize, pageSize);
+    }
+
+    public SelectQuery PageBy(long skipCount, long maxResultCount) {
+        selectModel.setMaxResultCount(maxResultCount);
+        selectModel.setSkipCount(skipCount);
+        return this;
+    }
+
+
     protected void CompleteWhere() {
         List<WhereClauseModel> whereClauseModels = selectModel.getWheres();
         whereClauseModels.add(whereRootClause);
         selectModel.setWheres(whereClauseModels);
         whereRootClause = null;
     }
-    protected void CompleteOrderBy(){
-        selectModel.setOrderBy(orderByRootClause);
+
+    protected void CompleteOrderBy() {
+        selectModel.setOrderBy(selectModel.getOrderBy());
     }
 
     @Override
     public void Execute() {
-
+        CompleteOrderBy();
     }
 
 }

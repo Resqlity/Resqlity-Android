@@ -27,15 +27,17 @@ public abstract class BaseQuery {
     }
 
     protected WhereClauseModel whereRootClause;
-    protected OrderByClauseModel orderByRootClause;
 
 
     public abstract WhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException;
 
     public abstract OrderByFunction OrderBy(Class<?> tableClass, String field, boolean isAsc) throws NoSuchFieldException;
+
     public abstract OrderByFunction OrderBy(String field, boolean isAsc) throws NoSuchFieldException;
 
     protected abstract void CompleteWhere();
+
+    protected abstract void CompleteOrderBy();
 
     public abstract void Execute();
 

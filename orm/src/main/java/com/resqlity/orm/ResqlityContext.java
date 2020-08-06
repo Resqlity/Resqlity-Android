@@ -28,6 +28,8 @@ public class ResqlityContext {
                 .Query()
                 .Select("lastName")
                 .OrderBy("name",true)
+                .Query()
+                .PageBy()
                 .Execute();
 
     }
