@@ -2,6 +2,8 @@ package com.resqlity.orm.queries;
 
 import com.resqlity.orm.annotations.ResqlityProperty;
 import com.resqlity.orm.annotations.ResqlityTable;
+import com.resqlity.orm.functions.orderBy.OrderByFunction;
+import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.functions.where.WhereFunction;
@@ -24,45 +26,60 @@ public abstract class BaseQuery {
         entityTableMappingList = new ArrayList<>();
     }
 
-    protected WhereClauseModel rootClause;
+    protected WhereClauseModel whereRootClause;
+    protected OrderByClauseModel orderByRootClause;
+
+
     public abstract WhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException;
+
+    public abstract OrderByFunction OrderBy(Class<?> tableClass, String field, boolean isAsc) throws NoSuchFieldException;
+    public abstract OrderByFunction OrderBy(String field, boolean isAsc) throws NoSuchFieldException;
+
     protected abstract void CompleteWhere();
+
     public abstract void Execute();
 
-    protected ResqlityProperty getProperty(Class<?> tableClass,String fieldName) throws NoSuchFieldException {
-       return tableClass.getDeclaredField(fieldName).getAnnotation(ResqlityProperty.class);
+    protected ResqlityProperty getProperty(Class<?> tableClass, String fieldName) throws NoSuchFieldException {
+        return tableClass.getDeclaredField(fieldName).getAnnotation(ResqlityProperty.class);
     }
 
     protected ResqlityProperty getProperty(String fieldName) throws NoSuchFieldException {
         return baseTableClass.getDeclaredField(fieldName).getAnnotation(ResqlityProperty.class);
     }
 
-    protected ResqlityTable getTable(){
+    protected ResqlityTable getTable() {
         return baseTableClass.getAnnotation(ResqlityTable.class);
     }
-    protected ResqlityTable getTable(Class<?> tableClass){
+
+    protected ResqlityTable getTable(Class<?> tableClass) {
         return tableClass.getAnnotation(ResqlityTable.class);
     }
 
-    protected String getTableName(Class<?> tableClass){
+    protected String getTableName(Class<?> tableClass) {
         return getTable(tableClass).TableName();
     }
-    protected String getTableName(){
+
+    protected String getTableName() {
         return getTable(baseTableClass).TableName();
     }
 
-    protected String getTableSchema(Class<?> tableClass){
+    protected String getTableSchema(Class<?> tableClass) {
         return getTable(tableClass).TableSchema();
     }
-    protected String getTableSchema(){
+
+    protected String getTableSchema() {
         return getTable(baseTableClass).TableSchema();
     }
 
     protected String getPropertyName(String fieldName) throws NoSuchFieldException {
         return getProperty(fieldName).ColumnName();
     }
-    protected String getPropertyName(Class<?> baseTableClass,String fieldName) throws NoSuchFieldException {
-        return getProperty(baseTableClass,fieldName).ColumnName();
+
+    protected String getPropertyName(Class<?> baseTableClass, String fieldName) throws NoSuchFieldException {
+        return getProperty(baseTableClass, fieldName).ColumnName();
     }
 
+    protected Class<?> getBaseTableClass() {
+        return baseTableClass;
+    }
 }

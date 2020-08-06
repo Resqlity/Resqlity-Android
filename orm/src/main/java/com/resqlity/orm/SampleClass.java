@@ -7,4 +7,6 @@ import com.resqlity.orm.annotations.ResqlityTable;
 public class SampleClass {
     @ResqlityProperty(ColumnName = "Firstname")
     private String name;
+    @ResqlityProperty(ColumnName = "LastName")
+    private String lastName;
 }

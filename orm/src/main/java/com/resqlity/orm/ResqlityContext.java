@@ -23,6 +23,11 @@ public class ResqlityContext {
         new SelectQuery(SampleClass.class)
                 .Where("name","Berkay",Comparator.Equal)
                 .Select("name")
+                .OrderBy("name",true)
+                .ThenBy("lastName",false)
+                .Query()
+                .Select("lastName")
+                .OrderBy("name",true)
                 .Execute();
 
     }

@@ -20,7 +20,7 @@ public class SelectWhereFunction extends WhereFunction {
             head = head.getInner();
         head.setDecision(Decision.AND);
 
-        head.setInner(getWhereClauseModel(query.getTableName(), query.getTableSchema(),query.getPropertyName(fieldName), compareTo, comparator));
+        head.setInner(getWhereClauseModel(query.getTableName(), query.getTableSchema(), query.getPropertyName(fieldName), compareTo, comparator));
         model = head;
         return this;
     }
@@ -31,7 +31,7 @@ public class SelectWhereFunction extends WhereFunction {
         while (head.getInner() != null)
             head = head.getInner();
         head.setDecision(Decision.OR);
-        head.setInner(getWhereClauseModel(query.getTableName(), query.getTableSchema(),query.getPropertyName(fieldName), compareTo, comparator));
+        head.setInner(getWhereClauseModel(query.getTableName(), query.getTableSchema(), query.getPropertyName(fieldName), compareTo, comparator));
         model = head;
         return this;
     }
@@ -40,7 +40,12 @@ public class SelectWhereFunction extends WhereFunction {
     @Override
     public SelectWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
         query.CompleteWhere();
-        return query.Where(fieldName,compareTo,comparator);
+        return query.Where(fieldName, compareTo, comparator);
+    }
+
+    @Override
+    public SelectQuery Query() {
+        return query;
     }
 
     public SelectQuery Select(String field) throws NoSuchFieldException {
