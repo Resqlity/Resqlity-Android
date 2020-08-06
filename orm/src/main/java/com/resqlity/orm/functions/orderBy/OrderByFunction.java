@@ -1,18 +1,18 @@
 package com.resqlity.orm.functions.orderBy;
 
 import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
-import com.resqlity.orm.queries.BaseQuery;
+import com.resqlity.orm.queries.BaseFilterableQuery;
 
 public abstract class OrderByFunction {
-    protected BaseQuery baseQuery;
+    protected BaseFilterableQuery baseQuery;
     protected OrderByClauseModel orderByClauseModel;
 
-    public OrderByFunction(BaseQuery baseQuery, OrderByClauseModel orderByClauseModel) {
+    public OrderByFunction(BaseFilterableQuery baseQuery, OrderByClauseModel orderByClauseModel) {
         this.baseQuery = baseQuery;
         this.orderByClauseModel = orderByClauseModel;
     }
 
-    public abstract BaseQuery Query();
+    public abstract BaseFilterableQuery Query();
 
     public abstract OrderByFunction ThenBy(Class<?> tableClass, String field, boolean isAsc) throws NoSuchFieldException;
 

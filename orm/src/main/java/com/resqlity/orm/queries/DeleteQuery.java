@@ -2,13 +2,12 @@ package com.resqlity.orm.queries;
 
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.functions.join.JoinFunction;
-import com.resqlity.orm.functions.where.WhereFunction;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.models.querymodels.DeleteModel;
 
 import java.util.List;
 
-public class DeleteQuery extends BaseQuery {
+public class DeleteQuery extends BaseFilterableQuery {
     DeleteModel deleteModel;
 
     public DeleteQuery(Class<?> tableClass) {

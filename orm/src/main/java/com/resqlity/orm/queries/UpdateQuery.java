@@ -8,7 +8,7 @@ import com.resqlity.orm.queryobjects.update.UpdateQueryObject;
 
 import java.util.List;
 
-public class UpdateQuery extends BaseQuery {
+public class UpdateQuery extends BaseFilterableQuery {
     UpdateModel updateModel;
 
     public UpdateQuery(Class<?> tableClass) {

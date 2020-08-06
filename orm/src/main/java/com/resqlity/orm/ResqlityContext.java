@@ -1,11 +1,15 @@
 package com.resqlity.orm;
 
+import com.google.gson.reflect.TypeToken;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.examples.SampleClass;
 import com.resqlity.orm.examples.SampleRelation;
 import com.resqlity.orm.queries.DeleteQuery;
+import com.resqlity.orm.queries.InsertQuery;
 import com.resqlity.orm.queries.SelectQuery;
 import com.resqlity.orm.queries.UpdateQuery;
+
+import java.lang.reflect.Type;
 
 public class ResqlityContext {
 
@@ -31,6 +35,10 @@ public class ResqlityContext {
         return new DeleteQuery(obj);
     }
 
+    public InsertQuery Insert(Class<? extends Object> obj) {
+        return new InsertQuery(obj);
+    }
+
     public void Foo() throws Exception {
 //        new SelectQuery(SampleClass.class)
 //                .Where("name", "Berkay", Comparator.Equal)
@@ -51,9 +59,15 @@ public class ResqlityContext {
 //                .Where("name", "Ahmet", Comparator.Equal)
 //                .And("lastName", "YALÇIN", Comparator.Equal)
 //                .Execute();
-        Delete(SampleClass.class)
-                .Where("name", "Berkay", Comparator.Equal)
-                .Or("name", "Ahmet", Comparator.Equal)
+//        Delete(SampleClass.class)
+//                .Where("name", "Berkay", Comparator.Equal)
+//                .Or("name", "Ahmet", Comparator.Equal)
+//                .Execute();
+        new InsertQuery(SampleClass.class)
+                .Insert(new SampleClass("Berkay","YALÇIN"))
+                .Insert(new SampleClass("Berkay","YALÇIN"))
+                .Insert(new SampleClass("Berkay","YALÇIN"))
+                .Insert(new SampleClass("Berkay","YALÇIN"))
                 .Execute();
     }
 

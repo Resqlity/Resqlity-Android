@@ -3,8 +3,6 @@ package com.resqlity.orm.queries;
 import com.resqlity.orm.consts.Pagination;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.JoinType;
-import com.resqlity.orm.functions.join.JoinFunction;
-import com.resqlity.orm.functions.orderBy.OrderByFunction;
 import com.resqlity.orm.models.clausemodels.JoinClauseModel;
 import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
@@ -13,7 +11,7 @@ import com.resqlity.orm.queryobjects.select.SelectColumn;
 
 import java.util.List;
 
-public class SelectQuery extends BaseQuery {
+public class SelectQuery extends BaseFilterableQuery {
     private SelectModel selectModel;
 
     public SelectQuery(Class<?> tableClass) {

@@ -2,13 +2,6 @@ package com.resqlity.orm.queries;
 
 import com.resqlity.orm.annotations.ResqlityProperty;
 import com.resqlity.orm.annotations.ResqlityTable;
-import com.resqlity.orm.functions.join.JoinFunction;
-import com.resqlity.orm.functions.orderBy.OrderByFunction;
-import com.resqlity.orm.models.clausemodels.JoinClauseModel;
-import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
-import com.resqlity.orm.models.clausemodels.WhereClauseModel;
-import com.resqlity.orm.enums.Comparator;
-import com.resqlity.orm.functions.where.WhereFunction;
 import com.resqlity.orm.models.mappingmodels.EntityPropertyMapping;
 import com.resqlity.orm.models.mappingmodels.EntityTableMapping;
 
@@ -16,55 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseQuery {
-    private String tableName;
-    private String tableSchema;
-    private Class<?> baseTableClass;
-    private List<EntityTableMapping> entityTableMappingList;
-    private List<EntityPropertyMapping> entityPropertyMappings;
+    protected String tableName;
+    protected String tableSchema;
+    protected Class<?> baseTableClass;
+    protected List<EntityTableMapping> entityTableMappingList;
+    protected List<EntityPropertyMapping> entityPropertyMappings;
 
     public BaseQuery(Class<?> tableClass) {
         this.baseTableClass = tableClass;
         entityPropertyMappings = new ArrayList<>();
         entityTableMappingList = new ArrayList<>();
     }
-
-    protected WhereClauseModel whereRootClause;
-    protected JoinClauseModel lastJoinClause;
-
-
-    public abstract WhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException;
-
-    public abstract JoinFunction InnerJoin(Class<?> joinClass,
-                                           String fieldName,
-                                           String parentFieldName,
-                                           Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
-
-    public abstract JoinFunction LeftJoin(Class<?> joinClass,
-                                          String fieldName,
-                                          String parentFieldName,
-                                          Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
-
-    public abstract JoinFunction RightJoin(Class<?> joinClass,
-                                           String fieldName,
-                                           String parentFieldName,
-                                           Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
-
-    public abstract JoinFunction LeftOuterJoin(Class<?> joinClass,
-                                               String fieldName,
-                                               String parentFieldName,
-                                               Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
-
-    public abstract JoinFunction RightOuterJoin(Class<?> joinClass,
-                                                String fieldName,
-                                                String parentFieldName,
-                                                Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
-
-
-
-
-    protected abstract void CompleteWhere();
-
-    protected abstract void CompleteJoin() throws NoSuchMethodException;
 
     public abstract void Execute() throws Exception;
 

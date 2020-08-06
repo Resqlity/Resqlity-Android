@@ -3,14 +3,13 @@ package com.resqlity.orm.functions.join;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.JoinType;
 import com.resqlity.orm.models.clausemodels.JoinClauseModel;
-import com.resqlity.orm.models.clausemodels.WhereClauseModel;
-import com.resqlity.orm.queries.BaseQuery;
+import com.resqlity.orm.queries.BaseFilterableQuery;
 
 public abstract class JoinFunction {
-    protected BaseQuery baseQuery;
+    protected BaseFilterableQuery baseQuery;
     protected JoinClauseModel joinClauseModel;
     protected Class<?> parentClass;
-    public JoinFunction(BaseQuery baseQuery, JoinClauseModel joinClauseModel,Class<?> parentClass) {
+    public JoinFunction(BaseFilterableQuery baseQuery, JoinClauseModel joinClauseModel, Class<?> parentClass) {
         this.baseQuery = baseQuery;
         this.joinClauseModel = joinClauseModel;
         this.parentClass=parentClass;
@@ -41,7 +40,7 @@ public abstract class JoinFunction {
                                                 String parentFieldName,
                                                 Comparator comparator) throws NoSuchFieldException;
 
-    public abstract BaseQuery Query();
+    public abstract BaseFilterableQuery Query();
 
     public void Execute() throws Exception {
         baseQuery.Execute();
