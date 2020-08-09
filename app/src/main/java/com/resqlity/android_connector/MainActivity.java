@@ -18,18 +18,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ResqlityContext context = new ResqlityContext("3XZMPJf8wYqOYPpk+lufyqaSwh9M+BitbvJazAoTp3M=");
+        ResqlityContext context = new ResqlityContext("trImnXg/L5zHICePLhkak1AFd3XKy6uur7fiCuCA/yc=");
         try {
-//            context.Insert(Customers.class)
-//                    .Insert(new Customers("Berkay",
-//                            "YALÇIN",
-//                            "905534787057",
-//                            "berkay.yalcin20hotmail.com",
-//                            "Saka",
-//                            "İstanbul",
-//                            "İstanbul",
-//                            "34000"))
-//                    .Execute();
+            context.Insert(Customers.class)
+                    .Insert(new Customers("Berkay",
+                            "YALÇIN",
+                            "905534787057",
+                            "berkay.yalcin20hotmail.com",
+                            "Saka",
+                            "İstanbul",
+                            "İstanbul",
+                            "34000"))
+                    .Execute();
             ResqlityResponse<List<Customers>> response = context.Select(Customers.class)
                     .PageBy()
                     .Select("firstName")
