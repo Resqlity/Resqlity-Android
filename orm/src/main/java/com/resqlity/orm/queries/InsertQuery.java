@@ -3,7 +3,9 @@ package com.resqlity.orm.queries;
 import com.resqlity.orm.ResqlityContext;
 import com.resqlity.orm.consts.Endpoints;
 import com.resqlity.orm.helpers.JsonHelper;
+import com.resqlity.orm.helpers.ResqlityHelpers;
 import com.resqlity.orm.models.querymodels.InsertModel;
+import com.resqlity.orm.models.responses.ResqlityErrorResponse;
 import com.resqlity.orm.models.responses.ResqlitySimpleResponse;
 
 import java.io.BufferedReader;
@@ -81,7 +83,7 @@ public class InsertQuery extends BaseInsertQuery {
 
                 int responseCode = urlConnection.getResponseCode();
 
-                if (responseCode == HttpsURLConnection.HTTP_CREATED || responseCode == HttpsURLConnection.HTTP_BAD_REQUEST) {
+                if (responseCode == HttpsURLConnection.HTTP_CREATED) {
                     String line;
                     BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                     while ((line = br.readLine()) != null) {
@@ -90,6 +92,16 @@ public class InsertQuery extends BaseInsertQuery {
                     ResqlitySimpleResponse t = (ResqlitySimpleResponse) JsonHelper.Deserialize(jsonResponse, response.getClass());
                     response.setMessage(t.getMessage());
                     response.setSuccess(t.isSuccess());
+                } else if (responseCode == HttpsURLConnection.HTTP_BAD_REQUEST) {
+                    String line;
+                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream()));
+                    while ((line = br.readLine()) != null) {
+                        jsonResponse += line;
+                    }
+                    ResqlityErrorResponse resqlityErrorResponse = JsonHelper.Deserialize(jsonResponse, ResqlityErrorResponse.class);
+                    String errorMessage = ResqlityHelpers.ParseErrors(resqlityErrorResponse.getErrors());
+                    response.setSuccess(false);
+                    response.setMessage(errorMessage);
                 } else {
                     jsonResponse = "";
                 }

@@ -6,10 +6,12 @@ import com.resqlity.orm.consts.Pagination;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.JoinType;
 import com.resqlity.orm.helpers.JsonHelper;
+import com.resqlity.orm.helpers.ResqlityHelpers;
 import com.resqlity.orm.models.clausemodels.JoinClauseModel;
 import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.models.querymodels.SelectModel;
+import com.resqlity.orm.models.responses.ResqlityErrorResponse;
 import com.resqlity.orm.models.responses.ResqlityResponse;
 import com.resqlity.orm.models.responses.ResqlitySimpleResponse;
 import com.resqlity.orm.queryobjects.select.SelectColumn;
@@ -117,7 +119,7 @@ public class SelectQuery extends BaseFilterableQuery {
 
     public SelectQuery PageBy(long skipCount, long maxResultCount) {
         selectModel.setMaxResultCount(maxResultCount);
-        selectModel.setSkipCount(skipCount);
+        selectModel.setSkipCount(-1);
         return this;
     }
 
@@ -171,16 +173,28 @@ public class SelectQuery extends BaseFilterableQuery {
                 os.close();
                 int responseCode = urlConnection.getResponseCode();
 
-                if (responseCode == HttpsURLConnection.HTTP_OK || responseCode == HttpsURLConnection.HTTP_BAD_REQUEST) {
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
                     String line;
                     BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                     while ((line = br.readLine()) != null) {
                         jsonResponse += line;
                     }
+
                     ResqlityResponse<T> t = (ResqlityResponse<T>) JsonHelper.Deserialize(jsonResponse, response.getClass());
                     response.setMessage(t.getMessage());
                     response.setSuccess(t.isSuccess());
                     response.setData(t.getData());
+                } else if (responseCode == HttpsURLConnection.HTTP_BAD_REQUEST) {
+                    String line;
+                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream()));
+                    while ((line = br.readLine()) != null) {
+                        jsonResponse += line;
+                    }
+                    ResqlityErrorResponse resqlityErrorResponse = JsonHelper.Deserialize(jsonResponse, ResqlityErrorResponse.class);
+                    String errorMessage = ResqlityHelpers.ParseErrors(resqlityErrorResponse.getErrors());
+                    response.setSuccess(false);
+                    response.setMessage(errorMessage);
+
                 } else {
                     jsonResponse = "";
                 }
