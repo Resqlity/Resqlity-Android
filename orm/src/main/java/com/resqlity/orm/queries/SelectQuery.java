@@ -119,7 +119,7 @@ public class SelectQuery extends BaseFilterableQuery {
 
     public SelectQuery PageBy(long skipCount, long maxResultCount) {
         selectModel.setMaxResultCount(maxResultCount);
-        selectModel.setSkipCount(-1);
+        selectModel.setSkipCount(skipCount);
         return this;
     }
 
