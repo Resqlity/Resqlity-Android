@@ -1,5 +1,6 @@
 package com.resqlity.orm.queries;
 
+import com.resqlity.orm.ResqlityContext;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.functions.join.JoinFunction;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
@@ -10,9 +11,9 @@ import java.util.List;
 public class DeleteQuery extends BaseFilterableQuery {
     DeleteModel deleteModel;
 
-    public DeleteQuery(Class<?> tableClass) {
-        super(tableClass);
-        deleteModel = new DeleteModel("apiKey", getTableName(), getTableSchema());
+    public DeleteQuery(Class<?> tableClass, ResqlityContext dbContext) {
+        super(tableClass, dbContext);
+        deleteModel = new DeleteModel(dbContext.getApiKey(), getTableName(), getTableSchema());
     }
 
     @Override

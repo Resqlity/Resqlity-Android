@@ -1,5 +1,6 @@
 package com.resqlity.orm.queries;
 
+import com.resqlity.orm.ResqlityContext;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.functions.join.JoinFunction;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
@@ -11,9 +12,9 @@ import java.util.List;
 public class UpdateQuery extends BaseFilterableQuery {
     UpdateModel updateModel;
 
-    public UpdateQuery(Class<?> tableClass) {
-        super(tableClass);
-        updateModel = new UpdateModel("apiKey", getTableName(), getTableSchema());
+    public UpdateQuery(Class<?> tableClass, ResqlityContext context) {
+        super(tableClass, context);
+        updateModel = new UpdateModel(context.getApiKey(), getTableName(), getTableSchema());
     }
 
     public UpdateQuery Update(String fieldName, Object value) throws Exception {

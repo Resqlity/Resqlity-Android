@@ -1,74 +1,35 @@
 package com.resqlity.orm;
 
-import com.google.gson.reflect.TypeToken;
-import com.resqlity.orm.enums.Comparator;
-import com.resqlity.orm.examples.SampleClass;
-import com.resqlity.orm.examples.SampleRelation;
 import com.resqlity.orm.queries.DeleteQuery;
 import com.resqlity.orm.queries.InsertQuery;
 import com.resqlity.orm.queries.SelectQuery;
 import com.resqlity.orm.queries.UpdateQuery;
 
-import java.lang.reflect.Type;
-
 public class ResqlityContext {
+    String apiKey;
 
+    public ResqlityContext(String apiKey) {
+        this.apiKey = apiKey;
+    }
 
-    public ResqlityContext() {
-
-        try {
-            Foo();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public String getApiKey() {
+        return apiKey;
     }
 
     public SelectQuery Select(Class<? extends Object> obj) {
-        return new SelectQuery(obj);
+        return new SelectQuery(obj, this);
     }
 
     public UpdateQuery Update(Class<? extends Object> obj) {
-        return new UpdateQuery(obj);
+        return new UpdateQuery(obj, this);
     }
 
     public DeleteQuery Delete(Class<? extends Object> obj) {
-        return new DeleteQuery(obj);
+        return new DeleteQuery(obj, this);
     }
 
     public InsertQuery Insert(Class<? extends Object> obj) {
-        return new InsertQuery(obj);
-    }
-
-    public void Foo() throws Exception {
-//        new SelectQuery(SampleClass.class)
-//                .Where("name", "Berkay", Comparator.Equal)
-//                .Select("name")
-//                .OrderBy("name", true)
-//                .ThenBy("lastName", false)
-//                .Query()
-//                .Select("lastName")
-//                .OrderBy("name", true)
-//                .Query()
-//                .PageBy()
-//                .InnerJoin(SampleRelation.class, "firstName", "name", Comparator.Equal)
-//                .ChildLeftJoin(SampleRelation.class, "parentId", "id", Comparator.Equal)
-//                .Execute();
-//        Update(SampleClass.class)
-//                .Update("name", "Berkay")
-//                .Update("lastName", "YALÇIN")
-//                .Where("name", "Ahmet", Comparator.Equal)
-//                .And("lastName", "YALÇIN", Comparator.Equal)
-//                .Execute();
-//        Delete(SampleClass.class)
-//                .Where("name", "Berkay", Comparator.Equal)
-//                .Or("name", "Ahmet", Comparator.Equal)
-//                .Execute();
-        new InsertQuery(SampleClass.class)
-                .Insert(new SampleClass("Berkay","YALÇIN"))
-                .Insert(new SampleClass("Berkay","YALÇIN"))
-                .Insert(new SampleClass("Berkay","YALÇIN"))
-                .Insert(new SampleClass("Berkay","YALÇIN"))
-                .Execute();
+        return new InsertQuery(obj, this);
     }
 
 

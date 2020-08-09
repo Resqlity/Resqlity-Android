@@ -1,5 +1,6 @@
 package com.resqlity.orm.queries;
 
+import com.resqlity.orm.ResqlityContext;
 import com.resqlity.orm.annotations.ResqlityProperty;
 import com.resqlity.orm.annotations.ResqlityTable;
 import com.resqlity.orm.models.mappingmodels.EntityPropertyMapping;
@@ -14,11 +15,13 @@ public abstract class BaseQuery {
     protected Class<?> baseTableClass;
     protected List<EntityTableMapping> entityTableMappingList;
     protected List<EntityPropertyMapping> entityPropertyMappings;
+    protected ResqlityContext dbContext;
 
-    public BaseQuery(Class<?> tableClass) {
+    public BaseQuery(Class<?> tableClass, ResqlityContext dbContext) {
         this.baseTableClass = tableClass;
         entityPropertyMappings = new ArrayList<>();
         entityTableMappingList = new ArrayList<>();
+        this.dbContext = dbContext;
     }
 
     public abstract void Execute() throws Exception;

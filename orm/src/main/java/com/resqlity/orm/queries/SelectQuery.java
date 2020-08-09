@@ -1,5 +1,6 @@
 package com.resqlity.orm.queries;
 
+import com.resqlity.orm.ResqlityContext;
 import com.resqlity.orm.consts.Pagination;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.JoinType;
@@ -14,9 +15,9 @@ import java.util.List;
 public class SelectQuery extends BaseFilterableQuery {
     private SelectModel selectModel;
 
-    public SelectQuery(Class<?> tableClass) {
-        super(tableClass);
-        selectModel = new SelectModel("apikey", getTableName(), getTableSchema());
+    public SelectQuery(Class<?> tableClass, ResqlityContext dbContext) {
+        super(tableClass, dbContext);
+        selectModel = new SelectModel(dbContext.getApiKey(), getTableName(), getTableSchema());
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.resqlity.orm.queries;
 
+import com.resqlity.orm.ResqlityContext;
 import com.resqlity.orm.annotations.ResqlityProperty;
 import com.resqlity.orm.annotations.ResqlityTable;
 import com.resqlity.orm.functions.join.JoinFunction;
@@ -15,14 +16,14 @@ import com.resqlity.orm.models.mappingmodels.EntityTableMapping;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseFilterableQuery extends BaseQuery{
+public abstract class BaseFilterableQuery extends BaseQuery {
 
 
     protected WhereClauseModel whereRootClause;
     protected JoinClauseModel lastJoinClause;
 
-    public BaseFilterableQuery(Class<?> tableClass) {
-        super(tableClass);
+    public BaseFilterableQuery(Class<?> tableClass, ResqlityContext dbContext) {
+        super(tableClass, dbContext);
     }
 
 
@@ -54,5 +55,6 @@ public abstract class BaseFilterableQuery extends BaseQuery{
                                                 Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
 
     protected abstract void CompleteWhere();
+
     protected abstract void CompleteJoin() throws NoSuchMethodException;
 }
