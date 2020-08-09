@@ -42,9 +42,9 @@ public abstract class JoinFunction {
 
     public abstract BaseFilterableQuery Query();
 
-    public void Execute() throws Exception {
-        baseQuery.Execute();
-    }
+//    public void Execute() throws Exception {
+//        baseQuery.Execute();
+//    }
 
     protected JoinClauseModel getJoinClauseModel(String tableName,
                                                  String tableSchema,

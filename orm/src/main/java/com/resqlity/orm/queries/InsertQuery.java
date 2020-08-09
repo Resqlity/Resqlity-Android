@@ -48,8 +48,7 @@ public class InsertQuery extends BaseInsertQuery {
     }
 
 
-    @Override
-    public void Execute() throws Exception {
+    public ResqlitySimpleResponse Execute() throws Exception {
         String urlString = Endpoints.INSERT_URL; // URL to call
         InsertModel insertModel = new InsertModel(dbContext.getApiKey(),
                 getTableName(),
@@ -104,9 +103,7 @@ public class InsertQuery extends BaseInsertQuery {
         Thread t = new Thread(insertRequest);
         t.start();
         t.join();
-        if (!response.isSuccess())
-            throw new Exception(response.getMessage());
-
+        return response;
 
     }
 

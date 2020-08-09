@@ -17,10 +17,10 @@ public abstract class OrderByFunction {
     public abstract OrderByFunction ThenBy(Class<?> tableClass, String field, boolean isAsc) throws NoSuchFieldException;
 
     public abstract OrderByFunction ThenBy(String field, boolean isAsc) throws NoSuchFieldException;
-
-    public void Execute() throws Exception {
-        baseQuery.Execute();
-    }
+//
+//    public void Execute() throws Exception {
+//        baseQuery.Execute();
+//    }
 
     protected OrderByClauseModel getOrderByClauseModel(String tableName, String tableSchema, String columnName, boolean isAsc) {
         return new OrderByClauseModel(tableName, tableSchema, columnName, isAsc);

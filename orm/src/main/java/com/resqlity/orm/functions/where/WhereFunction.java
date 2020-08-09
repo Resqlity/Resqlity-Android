@@ -19,9 +19,9 @@ public abstract class WhereFunction {
     public abstract WhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException;
     protected abstract WhereFunction Where(String fieldName, Object compareTo, Comparator comparator, Decision decision) throws NoSuchFieldException;
     public abstract BaseFilterableQuery Query();
-    public void Execute() throws Exception {
-        baseQuery.Execute();
-    }
+//    public void Execute() throws Exception {
+//        baseQuery.Execute();
+//    }
 
     protected WhereClauseModel getWhereClauseModel(String tableName, String tableSchema, String columnName, Object compareTo, Comparator comparator) {
         return new WhereClauseModel(tableName, tableSchema, columnName, compareTo, comparator);

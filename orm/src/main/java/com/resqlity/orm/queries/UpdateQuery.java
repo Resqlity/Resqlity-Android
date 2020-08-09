@@ -75,7 +75,6 @@ public class UpdateQuery extends BaseFilterableQuery {
         throw new NoSuchMethodException("Not Implemented");
     }
 
-    @Override
     public void Execute() throws Exception {
         if (whereRootClause != null)
             CompleteWhere();

@@ -24,7 +24,7 @@ public abstract class BaseQuery {
         this.dbContext = dbContext;
     }
 
-    public abstract void Execute() throws Exception;
+//    public abstract void Execute() throws Exception;
 
     protected ResqlityProperty getProperty(Class<?> tableClass, String fieldName) throws NoSuchFieldException {
         return tableClass.getDeclaredField(fieldName).getAnnotation(ResqlityProperty.class);

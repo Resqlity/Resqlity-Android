@@ -1,16 +1,30 @@
 package com.resqlity.orm.queries;
 
 import com.resqlity.orm.ResqlityContext;
+import com.resqlity.orm.consts.Endpoints;
 import com.resqlity.orm.consts.Pagination;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.JoinType;
+import com.resqlity.orm.helpers.JsonHelper;
 import com.resqlity.orm.models.clausemodels.JoinClauseModel;
 import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.models.querymodels.SelectModel;
+import com.resqlity.orm.models.responses.ResqlityResponse;
+import com.resqlity.orm.models.responses.ResqlitySimpleResponse;
 import com.resqlity.orm.queryobjects.select.SelectColumn;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class SelectQuery extends BaseFilterableQuery {
     private SelectModel selectModel;
@@ -127,13 +141,60 @@ public class SelectQuery extends BaseFilterableQuery {
         lastJoinClause = null;
     }
 
-    @Override
-    public void Execute() {
+    public <T> ResqlityResponse<T> Execute() throws InterruptedException {
         CompleteOrderBy();
         if (whereRootClause != null)
             CompleteWhere();
         if (lastJoinClause != null)
             CompleteJoin();
+        String data = JsonHelper.Serialize(selectModel); //data to post
+        final ResqlityResponse<T> response = new ResqlityResponse<T>("", false);
+        Runnable insertRequest = () -> {
+            OutputStream out = null;
+            String jsonResponse = "";
+            try {
+                URL url = new URL(Endpoints.SELECT_URL);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setDoInput(true);
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestProperty("ApiKey", dbContext.getApiKey());
+                urlConnection.setRequestProperty("TableName", getTableName());
+                urlConnection.setRequestProperty("TableSchema", getTableSchema());
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                OutputStream os = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, StandardCharsets.UTF_8));
+                writer.write(data);
+                writer.flush();
+                writer.close();
+                os.close();
+                int responseCode = urlConnection.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK || responseCode == HttpsURLConnection.HTTP_BAD_REQUEST) {
+                    String line;
+                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    while ((line = br.readLine()) != null) {
+                        jsonResponse += line;
+                    }
+                    ResqlityResponse<T> t = (ResqlityResponse<T>) JsonHelper.Deserialize(jsonResponse, response.getClass());
+                    response.setMessage(t.getMessage());
+                    response.setSuccess(t.isSuccess());
+                    response.setData(t.getData());
+                } else {
+                    jsonResponse = "";
+                }
+                urlConnection.connect();
+
+            } catch (Exception ignored) {
+                ignored.printStackTrace();
+            }
+        };
+
+        Thread t = new Thread(insertRequest);
+        t.start();
+        t.join();
+        return response;
     }
 
 }

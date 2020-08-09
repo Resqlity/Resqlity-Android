@@ -61,7 +61,6 @@ public class DeleteQuery extends BaseFilterableQuery {
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public void Execute() throws Exception {
         if (whereRootClause != null)
             CompleteWhere();
