@@ -4,6 +4,7 @@ import com.resqlity.orm.ResqlityContext;
 import com.resqlity.orm.annotations.ResqlityTable;
 import com.resqlity.orm.consts.Endpoints;
 import com.resqlity.orm.enums.Comparator;
+import com.resqlity.orm.exceptions.ResqlityDbException;
 import com.resqlity.orm.functions.join.JoinFunction;
 import com.resqlity.orm.helpers.JsonHelper;
 import com.resqlity.orm.helpers.ResqlityHelpers;
@@ -37,34 +38,35 @@ public class DeleteQuery extends BaseFilterableQuery {
     }
 
     @Override
-    public DeleteWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
-        WhereClauseModel root = new WhereClauseModel(super.getTableName(), super.getTableSchema(), super.getPropertyName(fieldName), compareTo, comparator);
+    public DeleteWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
+        WhereClauseModel root = null;
+        root = new WhereClauseModel(super.getTableName(), super.getTableSchema(), super.getPropertyName(fieldName), compareTo, comparator);
         whereRootClause = root;
         return new DeleteWhereFunction(root, this);
     }
 
     @Override
-    public JoinFunction InnerJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException, NoSuchMethodException {
+    public JoinFunction InnerJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public JoinFunction LeftJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException, NoSuchMethodException {
+    public JoinFunction LeftJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public JoinFunction RightJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException, NoSuchMethodException {
+    public JoinFunction RightJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public JoinFunction LeftOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException, NoSuchMethodException {
+    public JoinFunction LeftOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public JoinFunction RightOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException, NoSuchMethodException {
+    public JoinFunction RightOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException();
     }
 
@@ -77,15 +79,15 @@ public class DeleteQuery extends BaseFilterableQuery {
     }
 
     @Override
-    protected void CompleteJoin() throws NoSuchMethodException {
+    protected void CompleteJoin() throws ResqlityDbException {
         throw new UnsupportedOperationException();
     }
 
-    public ResqlityResponse<Integer> Execute() throws InterruptedException {
+    public ResqlityResponse<Integer> Execute() throws ResqlityDbException {
         return Execute(false);
     }
 
-    public ResqlityResponse<Integer> Execute(boolean useTransaction) throws InterruptedException {
+    public ResqlityResponse<Integer> Execute(boolean useTransaction) throws ResqlityDbException {
         if (whereRootClause != null)
             CompleteWhere();
 
@@ -123,7 +125,11 @@ public class DeleteQuery extends BaseFilterableQuery {
 
         Thread t = new Thread(insertRequest);
         t.start();
-        t.join();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            throw new ResqlityDbException(e.getMessage(), e);
+        }
         return response;
 
     }

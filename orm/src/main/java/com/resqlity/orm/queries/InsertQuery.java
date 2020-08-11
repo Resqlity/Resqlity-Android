@@ -2,6 +2,7 @@ package com.resqlity.orm.queries;
 
 import com.resqlity.orm.ResqlityContext;
 import com.resqlity.orm.consts.Endpoints;
+import com.resqlity.orm.exceptions.ResqlityDbException;
 import com.resqlity.orm.helpers.JsonHelper;
 import com.resqlity.orm.helpers.ResqlityHelpers;
 import com.resqlity.orm.models.querymodels.InsertModel;
@@ -57,7 +58,7 @@ public class InsertQuery extends BaseInsertQuery {
     }
 
 
-    public ResqlitySimpleResponse Execute() throws Exception {
+    public ResqlitySimpleResponse Execute() throws ResqlityDbException {
         String urlString = Endpoints.INSERT_URL; // URL to call
         InsertModel insertModel = new InsertModel(dbContext.getApiKey(),
                 getTableName(),
@@ -98,7 +99,11 @@ public class InsertQuery extends BaseInsertQuery {
 
         Thread t = new Thread(insertRequest);
         t.start();
-        t.join();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            throw new ResqlityDbException(e.getMessage(),e);
+        }
         return response;
 
     }

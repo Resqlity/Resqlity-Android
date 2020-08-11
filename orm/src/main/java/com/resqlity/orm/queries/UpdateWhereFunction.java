@@ -2,6 +2,7 @@ package com.resqlity.orm.queries;
 
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.Decision;
+import com.resqlity.orm.exceptions.ResqlityDbException;
 import com.resqlity.orm.functions.where.WhereFunction;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 
@@ -15,23 +16,23 @@ public class UpdateWhereFunction extends WhereFunction {
     }
 
     @Override
-    public UpdateWhereFunction And(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
+    public UpdateWhereFunction And(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
         return Where(fieldName, compareTo, comparator, Decision.AND);
     }
 
     @Override
-    public UpdateWhereFunction Or(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
+    public UpdateWhereFunction Or(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
         return Where(fieldName, compareTo, comparator, Decision.OR);
     }
 
     @Override
-    public UpdateWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
+    public UpdateWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
         query.CompleteWhere();
         return query.Where(fieldName, compareTo, comparator);
     }
 
     @Override
-    protected UpdateWhereFunction Where(String fieldName, Object compareTo, Comparator comparator, Decision decision) throws NoSuchFieldException {
+    protected UpdateWhereFunction Where(String fieldName, Object compareTo, Comparator comparator, Decision decision) throws ResqlityDbException {
         WhereClauseModel head = model;
         while (head.getInner() != null)
             head = head.getInner();

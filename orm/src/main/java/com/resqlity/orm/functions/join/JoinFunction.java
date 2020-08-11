@@ -2,6 +2,7 @@ package com.resqlity.orm.functions.join;
 
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.JoinType;
+import com.resqlity.orm.exceptions.ResqlityDbException;
 import com.resqlity.orm.models.clausemodels.JoinClauseModel;
 import com.resqlity.orm.queries.BaseFilterableQuery;
 
@@ -19,27 +20,27 @@ public abstract class JoinFunction {
     public abstract JoinFunction ChildInnerJoin(Class<?> joinClass,
                                                 String fieldName,
                                                 String parentFieldName,
-                                                Comparator comparator) throws NoSuchFieldException;
+                                                Comparator comparator) throws ResqlityDbException;
 
     public abstract JoinFunction ChildLeftJoin(Class<?> joinClass,
                                                String fieldName,
                                                String parentFieldName,
-                                               Comparator comparator) throws NoSuchFieldException;
+                                               Comparator comparator) throws ResqlityDbException;
 
     public abstract JoinFunction ChildRightJoin(Class<?> joinClass,
                                                 String fieldName,
                                                 String parentFieldName,
-                                                Comparator comparator) throws NoSuchFieldException;
+                                                Comparator comparator) throws ResqlityDbException;
 
     public abstract JoinFunction ChildLeftOuterJoin(Class<?> joinClass,
                                                     String fieldName,
                                                     String parentFieldName,
-                                                    Comparator comparator) throws NoSuchFieldException;
+                                                    Comparator comparator) throws ResqlityDbException;
 
     public abstract JoinFunction ChildRightOuterJoin(Class<?> joinClass,
                                                      String fieldName,
                                                      String parentFieldName,
-                                                     Comparator comparator) throws NoSuchFieldException;
+                                                     Comparator comparator) throws ResqlityDbException;
 
     public abstract BaseFilterableQuery Query();
 

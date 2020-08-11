@@ -3,6 +3,7 @@ package com.resqlity.orm.queries;
 import com.resqlity.orm.ResqlityContext;
 import com.resqlity.orm.annotations.ResqlityProperty;
 import com.resqlity.orm.annotations.ResqlityTable;
+import com.resqlity.orm.exceptions.ResqlityDbException;
 import com.resqlity.orm.functions.join.JoinFunction;
 import com.resqlity.orm.functions.orderBy.OrderByFunction;
 import com.resqlity.orm.models.clausemodels.JoinClauseModel;
@@ -27,34 +28,34 @@ public abstract class BaseFilterableQuery extends BaseQuery {
     }
 
 
-    public abstract WhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException;
+    public abstract WhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException;
 
     public abstract JoinFunction InnerJoin(Class<?> joinClass,
                                            String fieldName,
                                            String parentFieldName,
-                                           Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
+                                           Comparator comparator) throws ResqlityDbException;
 
     public abstract JoinFunction LeftJoin(Class<?> joinClass,
                                           String fieldName,
                                           String parentFieldName,
-                                          Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
+                                          Comparator comparator) throws ResqlityDbException;
 
     public abstract JoinFunction RightJoin(Class<?> joinClass,
                                            String fieldName,
                                            String parentFieldName,
-                                           Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
+                                           Comparator comparator) throws ResqlityDbException;
 
     public abstract JoinFunction LeftOuterJoin(Class<?> joinClass,
                                                String fieldName,
                                                String parentFieldName,
-                                               Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
+                                               Comparator comparator) throws ResqlityDbException;
 
     public abstract JoinFunction RightOuterJoin(Class<?> joinClass,
                                                 String fieldName,
                                                 String parentFieldName,
-                                                Comparator comparator) throws NoSuchFieldException, NoSuchMethodException;
+                                                Comparator comparator) throws ResqlityDbException;
 
     protected abstract void CompleteWhere();
 
-    protected abstract void CompleteJoin() throws NoSuchMethodException;
+    protected abstract void CompleteJoin() throws ResqlityDbException;
 }

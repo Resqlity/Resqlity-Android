@@ -2,6 +2,7 @@ package com.resqlity.orm.queries;
 
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.JoinType;
+import com.resqlity.orm.exceptions.ResqlityDbException;
 import com.resqlity.orm.functions.join.JoinFunction;
 import com.resqlity.orm.models.clausemodels.JoinClauseModel;
 
@@ -17,36 +18,36 @@ public class SelectJoinFunction extends JoinFunction {
     }
 
     @Override
-    public SelectJoinFunction ChildInnerJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+    public SelectJoinFunction ChildInnerJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         Join(joinClass, fieldName, parentFieldName, comparator, JoinType.INNER);
         return this;
     }
 
     @Override
-    public SelectJoinFunction ChildLeftJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+    public SelectJoinFunction ChildLeftJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         Join(joinClass, fieldName, parentFieldName, comparator, JoinType.LEFT);
         return this;
     }
 
     @Override
-    public SelectJoinFunction ChildRightJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+    public SelectJoinFunction ChildRightJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         Join(joinClass, fieldName, parentFieldName, comparator, JoinType.RIGHT);
         return this;
     }
 
     @Override
-    public SelectJoinFunction ChildLeftOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+    public SelectJoinFunction ChildLeftOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         Join(joinClass, fieldName, parentFieldName, comparator, JoinType.LEFT_OUTER);
         return this;
     }
 
     @Override
-    public SelectJoinFunction ChildRightOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+    public SelectJoinFunction ChildRightOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         Join(joinClass, fieldName, parentFieldName, comparator, JoinType.RIGHT_OUTER);
         return this;
     }
 
-    private void Join(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator, JoinType type) throws NoSuchFieldException {
+    private void Join(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator, JoinType type) throws ResqlityDbException {
         JoinClauseModel head = joinClauseModel;
         List<JoinClauseModel> joins = head.getJoins();
         joins.add(getJoinClauseModel(query.getTableName(joinClass),

@@ -5,6 +5,7 @@ import com.resqlity.orm.consts.Endpoints;
 import com.resqlity.orm.consts.Pagination;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.JoinType;
+import com.resqlity.orm.exceptions.ResqlityDbException;
 import com.resqlity.orm.helpers.JsonHelper;
 import com.resqlity.orm.helpers.ResqlityHelpers;
 import com.resqlity.orm.models.clausemodels.JoinClauseModel;
@@ -41,7 +42,7 @@ public class SelectQuery extends BaseFilterableQuery {
      * @return
      * @throws NoSuchFieldException
      */
-    public SelectQuery Select(String field) throws NoSuchFieldException {
+    public SelectQuery Select(String field) throws ResqlityDbException {
         List<SelectColumn> columns = selectModel.getSelectedColumns();
         SelectColumn column = new SelectColumn(super.getTableName(), super.getTableSchema(), super.getPropertyName(field), field);
         columns.add(column);
@@ -49,13 +50,13 @@ public class SelectQuery extends BaseFilterableQuery {
         return this;
     }
 
-    public SelectWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
+    public SelectWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
         WhereClauseModel root = new WhereClauseModel(super.getTableName(), super.getTableSchema(), super.getPropertyName(fieldName), compareTo, comparator);
         whereRootClause = root;
         return new SelectWhereFunction(root, this);
     }
 
-    public SelectOrderByFunction OrderBy(Class<?> tableClass, String field, boolean isAsc) throws NoSuchFieldException {
+    public SelectOrderByFunction OrderBy(Class<?> tableClass, String field, boolean isAsc) throws ResqlityDbException {
         if (selectModel.getOrderBy() == null) {
             selectModel.setOrderBy(new OrderByClauseModel(getTableName(tableClass), getTableSchema(tableClass), getPropertyName(field), isAsc));
             return new SelectOrderByFunction(this, selectModel.getOrderBy());
@@ -65,36 +66,36 @@ public class SelectQuery extends BaseFilterableQuery {
         return func;
     }
 
-    public SelectOrderByFunction OrderBy(String field, boolean isAsc) throws NoSuchFieldException {
+    public SelectOrderByFunction OrderBy(String field, boolean isAsc) throws ResqlityDbException {
         return OrderBy(getBaseTableClass(), field, isAsc);
     }
 
     @Override
-    public SelectJoinFunction InnerJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+    public SelectJoinFunction InnerJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         return Join(joinClass, fieldName, parentFieldName, comparator, JoinType.INNER);
     }
 
     @Override
-    public SelectJoinFunction LeftJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+    public SelectJoinFunction LeftJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         return Join(joinClass, fieldName, parentFieldName, comparator, JoinType.LEFT);
     }
 
     @Override
-    public SelectJoinFunction RightJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+    public SelectJoinFunction RightJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         return Join(joinClass, fieldName, parentFieldName, comparator, JoinType.RIGHT);
     }
 
     @Override
-    public SelectJoinFunction LeftOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+    public SelectJoinFunction LeftOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         return Join(joinClass, fieldName, parentFieldName, comparator, JoinType.LEFT_OUTER);
     }
 
     @Override
-    public SelectJoinFunction RightOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException {
+    public SelectJoinFunction RightOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         return Join(joinClass, fieldName, parentFieldName, comparator, JoinType.RIGHT_OUTER);
     }
 
-    private SelectJoinFunction Join(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator, JoinType type) throws NoSuchFieldError, NoSuchFieldException {
+    private SelectJoinFunction Join(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator, JoinType type) throws ResqlityDbException {
         String tableName = getTableName(joinClass);
         String tableSchema = getTableSchema(joinClass);
         String parentColumnName = getPropertyName(parentFieldName);
@@ -143,7 +144,7 @@ public class SelectQuery extends BaseFilterableQuery {
         lastJoinClause = null;
     }
 
-    public <T> ResqlityResponse<T> Execute() throws InterruptedException {
+    public <T> ResqlityResponse<T> Execute() throws ResqlityDbException {
         CompleteOrderBy();
         if (whereRootClause != null)
             CompleteWhere();
@@ -185,7 +186,11 @@ public class SelectQuery extends BaseFilterableQuery {
 
         Thread t = new Thread(insertRequest);
         t.start();
-        t.join();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            throw new ResqlityDbException(e.getMessage(),e);
+        }
         return response;
     }
 

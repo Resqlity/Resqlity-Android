@@ -1,5 +1,6 @@
 package com.resqlity.orm.queries;
 
+import com.resqlity.orm.exceptions.ResqlityDbException;
 import com.resqlity.orm.functions.orderBy.OrderByFunction;
 import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
 
@@ -18,7 +19,7 @@ public class SelectOrderByFunction extends OrderByFunction {
     }
 
     @Override
-    public SelectOrderByFunction ThenBy(Class<?> tableClass, String field, boolean isAsc) throws NoSuchFieldException {
+    public SelectOrderByFunction ThenBy(Class<?> tableClass, String field, boolean isAsc) throws ResqlityDbException {
         OrderByClauseModel head = orderByClauseModel;
         while (head.getThenBy() != null)
             head = head.getThenBy();
@@ -28,7 +29,7 @@ public class SelectOrderByFunction extends OrderByFunction {
     }
 
     @Override
-    public SelectOrderByFunction ThenBy(String field, boolean isAsc) throws NoSuchFieldException {
+    public SelectOrderByFunction ThenBy(String field, boolean isAsc) throws ResqlityDbException {
         return ThenBy(query.getBaseTableClass(), field, isAsc);
     }
 }

@@ -1,5 +1,6 @@
 package com.resqlity.orm.functions.orderBy;
 
+import com.resqlity.orm.exceptions.ResqlityDbException;
 import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
 import com.resqlity.orm.queries.BaseFilterableQuery;
 
@@ -14,9 +15,9 @@ public abstract class OrderByFunction {
 
     public abstract BaseFilterableQuery Query();
 
-    public abstract OrderByFunction ThenBy(Class<?> tableClass, String field, boolean isAsc) throws NoSuchFieldException;
+    public abstract OrderByFunction ThenBy(Class<?> tableClass, String field, boolean isAsc) throws ResqlityDbException;
 
-    public abstract OrderByFunction ThenBy(String field, boolean isAsc) throws NoSuchFieldException;
+    public abstract OrderByFunction ThenBy(String field, boolean isAsc) throws ResqlityDbException;
 
     protected OrderByClauseModel getOrderByClauseModel(String tableName, String tableSchema, String columnName, boolean isAsc) {
         return new OrderByClauseModel(tableName, tableSchema, columnName, isAsc);

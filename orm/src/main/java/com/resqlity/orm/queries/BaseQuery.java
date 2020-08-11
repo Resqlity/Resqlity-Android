@@ -3,6 +3,7 @@ package com.resqlity.orm.queries;
 import com.resqlity.orm.ResqlityContext;
 import com.resqlity.orm.annotations.ResqlityProperty;
 import com.resqlity.orm.annotations.ResqlityTable;
+import com.resqlity.orm.exceptions.ResqlityDbException;
 import com.resqlity.orm.models.mappingmodels.EntityPropertyMapping;
 import com.resqlity.orm.models.mappingmodels.EntityTableMapping;
 
@@ -26,12 +27,20 @@ public abstract class BaseQuery {
 
 //    public abstract void Execute() throws Exception;
 
-    protected ResqlityProperty getProperty(Class<?> tableClass, String fieldName) throws NoSuchFieldException {
-        return tableClass.getDeclaredField(fieldName).getAnnotation(ResqlityProperty.class);
+    protected ResqlityProperty getProperty(Class<?> tableClass, String fieldName) throws ResqlityDbException {
+        try {
+            return tableClass.getDeclaredField(fieldName).getAnnotation(ResqlityProperty.class);
+        } catch (NoSuchFieldException e) {
+            throw new ResqlityDbException(e.getMessage(),e);
+        }
     }
 
-    protected ResqlityProperty getProperty(String fieldName) throws NoSuchFieldException {
-        return baseTableClass.getDeclaredField(fieldName).getAnnotation(ResqlityProperty.class);
+    protected ResqlityProperty getProperty(String fieldName) throws ResqlityDbException {
+        try {
+            return baseTableClass.getDeclaredField(fieldName).getAnnotation(ResqlityProperty.class);
+        } catch (NoSuchFieldException e) {
+            throw new ResqlityDbException(e.getMessage(),e);
+        }
     }
 
     protected ResqlityTable getTable() {
@@ -58,11 +67,11 @@ public abstract class BaseQuery {
         return getTable(baseTableClass).TableSchema();
     }
 
-    protected String getPropertyName(String fieldName) throws NoSuchFieldException {
+    protected String getPropertyName(String fieldName) throws ResqlityDbException {
         return getProperty(fieldName).ColumnName();
     }
 
-    protected String getPropertyName(Class<?> baseTableClass, String fieldName) throws NoSuchFieldException {
+    protected String getPropertyName(Class<?> baseTableClass, String fieldName) throws ResqlityDbException {
         return getProperty(baseTableClass, fieldName).ColumnName();
     }
 

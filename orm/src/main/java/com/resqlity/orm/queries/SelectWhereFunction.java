@@ -1,5 +1,6 @@
 package com.resqlity.orm.queries;
 
+import com.resqlity.orm.exceptions.ResqlityDbException;
 import com.resqlity.orm.functions.where.WhereFunction;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.enums.Comparator;
@@ -14,24 +15,24 @@ public class SelectWhereFunction extends WhereFunction {
     }
 
     @Override
-    public SelectWhereFunction And(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
+    public SelectWhereFunction And(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
         return Where(fieldName,compareTo,comparator,Decision.AND);
     }
 
     @Override
-    public SelectWhereFunction Or(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
+    public SelectWhereFunction Or(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
         return Where(fieldName,compareTo,comparator,Decision.OR);
     }
 
 
     @Override
-    public SelectWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
+    public SelectWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
         query.CompleteWhere();
         return query.Where(fieldName, compareTo, comparator);
     }
 
     @Override
-    protected SelectWhereFunction Where(String fieldName, Object compareTo, Comparator comparator, Decision decision) throws NoSuchFieldException {
+    protected SelectWhereFunction Where(String fieldName, Object compareTo, Comparator comparator, Decision decision) throws ResqlityDbException {
         WhereClauseModel head = model;
         while (head.getInner() != null)
             head = head.getInner();
@@ -46,7 +47,7 @@ public class SelectWhereFunction extends WhereFunction {
         return query;
     }
 
-    public SelectQuery Select(String field) throws NoSuchFieldException {
+    public SelectQuery Select(String field) throws ResqlityDbException {
         query.CompleteWhere();
         return query.Select(field);
     }

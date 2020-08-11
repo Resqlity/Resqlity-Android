@@ -3,6 +3,7 @@ package com.resqlity.orm.queries;
 import com.resqlity.orm.ResqlityContext;
 import com.resqlity.orm.consts.Endpoints;
 import com.resqlity.orm.enums.Comparator;
+import com.resqlity.orm.exceptions.ResqlityDbException;
 import com.resqlity.orm.functions.join.JoinFunction;
 import com.resqlity.orm.helpers.JsonHelper;
 import com.resqlity.orm.helpers.ResqlityHelpers;
@@ -24,48 +25,48 @@ public class UpdateQuery extends BaseFilterableQuery {
         updateModel = new UpdateModel(context.getApiKey(), getTableName(), getTableSchema());
     }
 
-    public UpdateQuery Update(String fieldName, Object value) throws Exception {
+    public UpdateQuery Update(String fieldName, Object value) throws ResqlityDbException {
         List<UpdateQueryObject> updateQueryObjects = updateModel.getModel();
         String columnName = getPropertyName(fieldName);
         String tableName = getTableName();
         String tableSchema = getTableSchema();
         UpdateQueryObject object = new UpdateQueryObject(tableName, tableSchema, columnName, value);
         if (updateQueryObjects.stream().anyMatch(x -> x.getColumnName() == columnName && x.getTableName() == tableName && x.getTableSchema() == tableSchema))
-            throw new Exception("Key already exists");
+            throw new ResqlityDbException("Key already exists");
         updateQueryObjects.add(object);
         updateModel.setModel(updateQueryObjects);
         return this;
     }
 
     @Override
-    public UpdateWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws NoSuchFieldException {
+    public UpdateWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
         WhereClauseModel root = new WhereClauseModel(super.getTableName(), super.getTableSchema(), super.getPropertyName(fieldName), compareTo, comparator);
         whereRootClause = root;
         return new UpdateWhereFunction(root, this);
     }
 
     @Override
-    public JoinFunction InnerJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException, NoSuchMethodException {
+    public JoinFunction InnerJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException("Not Implemented");
     }
 
     @Override
-    public JoinFunction LeftJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException, NoSuchMethodException {
+    public JoinFunction LeftJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException("Not Implemented");
     }
 
     @Override
-    public JoinFunction RightJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException, NoSuchMethodException {
+    public JoinFunction RightJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException("Not Implemented");
     }
 
     @Override
-    public JoinFunction LeftOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException, NoSuchMethodException {
+    public JoinFunction LeftOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException("Not Implemented");
     }
 
     @Override
-    public JoinFunction RightOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws NoSuchFieldException, NoSuchMethodException {
+    public JoinFunction RightOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException("Not Implemented");
     }
 
@@ -78,17 +79,17 @@ public class UpdateQuery extends BaseFilterableQuery {
     }
 
     @Override
-    protected void CompleteJoin() throws NoSuchMethodException {
-        throw new NoSuchMethodException("Not Implemented");
+    protected void CompleteJoin() throws ResqlityDbException {
+        throw new ResqlityDbException("Not Implemented");
     }
 
-    public void Execute() throws Exception {
+    public void Execute() throws ResqlityDbException {
         Execute(false);
     }
 
-    public ResqlityResponse<Integer> Execute(boolean useTransaction) throws Exception {
+    public ResqlityResponse<Integer> Execute(boolean useTransaction) throws ResqlityDbException {
         if (updateModel.getModel() == null || updateModel.getModel().isEmpty())
-            throw new Exception("Invalid Operation");
+            throw new ResqlityDbException("Invalid Operation");
 
         if (whereRootClause != null)
             CompleteWhere();
@@ -124,7 +125,11 @@ public class UpdateQuery extends BaseFilterableQuery {
 
         Thread t = new Thread(insertRequest);
         t.start();
-        t.join();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            throw new ResqlityDbException(e.getMessage(), e);
+        }
         return response;
     }
 }
