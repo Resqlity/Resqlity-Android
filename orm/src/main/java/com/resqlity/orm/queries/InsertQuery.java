@@ -33,7 +33,7 @@ public class InsertQuery extends BaseInsertQuery {
         Data = new ArrayList<Object>();
     }
 
-    public InsertQuery Insert(Object... data) throws Exception {
+    public InsertQuery Insert(Object... data) throws ResqlityDbException {
         for (Object t :
                 data) {
             Insert(t);
@@ -41,7 +41,7 @@ public class InsertQuery extends BaseInsertQuery {
         return this;
     }
 
-    public InsertQuery Insert(Object data) throws Exception {
+    public InsertQuery Insert(Object data) throws ResqlityDbException {
 
         HashMap<String, Object> values = new HashMap<>();
 
@@ -50,7 +50,12 @@ public class InsertQuery extends BaseInsertQuery {
                 data.getClass().getDeclaredFields()) {
             String propertyName = getPropertyName(declaredField.getName());
             declaredField.setAccessible(true);
-            Object value = declaredField.get(data);
+            Object value = null;
+            try {
+                value = declaredField.get(data);
+            } catch (IllegalAccessException e) {
+                throw new ResqlityDbException(e.getMessage(), e);
+            }
             values.put(propertyName, value);
         }
         Data.add(values);
@@ -102,7 +107,7 @@ public class InsertQuery extends BaseInsertQuery {
         try {
             t.join();
         } catch (InterruptedException e) {
-            throw new ResqlityDbException(e.getMessage(),e);
+            throw new ResqlityDbException(e.getMessage(), e);
         }
         return response;
 

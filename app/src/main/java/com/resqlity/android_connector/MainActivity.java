@@ -38,17 +38,17 @@ public class MainActivity extends AppCompatActivity {
                                     "İstanbul",
                                     "34000"))
                     .Execute();
-//            ResqlityResponse<List<Customers>> response = context.Select(Customers.class)
-//                    .PageBy()
-//                    .Select("firstName")
-//                    .Where("firstName", "aaron", Comparator.Equal)
-//                    .Query()
-//                    .<List<Customers>>Execute();
-//
-//            ResqlityResponse<Integer> deleteResponse = context.Delete(Customers.class)
-//                    .Where("lastName", "Alvarez", Comparator.Equal)
-//                    .And("state", "NY", Comparator.Equal)
-//                    .Query().Execute(true);
+            ResqlityResponse<List<Customers>> response = context.Select(Customers.class)
+                    .PageBy()
+                    .Select("firstName")
+                    .Where("firstName", "aaron", Comparator.Equal)
+                    .Query()
+                    .<List<Customers>>Execute();
+
+            ResqlityResponse<Integer> deleteResponse = context.Delete(Customers.class)
+                    .Where("lastName", "Alvarez", Comparator.Equal)
+                    .And("state", "NY", Comparator.Equal)
+                    .Query().Execute(true);
             ResqlityResponse<Integer> updateResponse = context.Update(Customers.class)
                     .Update("state", "NY")
                     .Where("lastName", "Acevedo", Comparator.Equal)
