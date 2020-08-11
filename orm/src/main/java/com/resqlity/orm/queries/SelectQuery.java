@@ -11,13 +11,13 @@ import com.resqlity.orm.models.clausemodels.JoinClauseModel;
 import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.models.querymodels.SelectModel;
-import com.resqlity.orm.models.responses.ResqlityErrorResponse;
 import com.resqlity.orm.models.responses.ResqlityResponse;
-import com.resqlity.orm.models.responses.ResqlitySimpleResponse;
 import com.resqlity.orm.queryobjects.select.SelectColumn;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -149,54 +149,32 @@ public class SelectQuery extends BaseFilterableQuery {
             CompleteWhere();
         if (lastJoinClause != null)
             CompleteJoin();
-        String data = JsonHelper.Serialize(selectModel); //data to post
+
         final ResqlityResponse<T> response = new ResqlityResponse<T>("", false);
         Runnable insertRequest = () -> {
-            OutputStream out = null;
-            String jsonResponse = "";
             try {
-                URL url = new URL(Endpoints.SELECT_URL);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setDoInput(true);
-                urlConnection.setDoOutput(true);
-                urlConnection.setRequestProperty("ApiKey", dbContext.getApiKey());
-                urlConnection.setRequestProperty("TableName", getTableName());
-                urlConnection.setRequestProperty("TableSchema", getTableSchema());
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-                OutputStream os = urlConnection.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, StandardCharsets.UTF_8));
-                writer.write(data);
-                writer.flush();
-                writer.close();
-                os.close();
+                HttpURLConnection urlConnection = ResqlityHelpers.getHttpURLConnection(
+                        JsonHelper.Serialize(selectModel),
+                        "POST",
+                        Endpoints.SELECT_URL,
+                        ResqlityHelpers.getDefaultHeaders(dbContext.getApiKey(), getTableName(), getTableSchema()),
+                        true,
+                        true);
                 int responseCode = urlConnection.getResponseCode();
 
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
-                    String line;
-                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    while ((line = br.readLine()) != null) {
-                        jsonResponse += line;
-                    }
-
-                    ResqlityResponse<T> t = (ResqlityResponse<T>) JsonHelper.Deserialize(jsonResponse, response.getClass());
+                    ResqlityResponse<T> t = ResqlityHelpers.getResqlityResponse(urlConnection.getInputStream(), response.getClass());
                     response.setMessage(t.getMessage());
                     response.setSuccess(t.isSuccess());
                     response.setData(t.getData());
                 } else if (responseCode == HttpsURLConnection.HTTP_BAD_REQUEST) {
-                    String line;
-                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream()));
-                    while ((line = br.readLine()) != null) {
-                        jsonResponse += line;
-                    }
-                    ResqlityErrorResponse resqlityErrorResponse = JsonHelper.Deserialize(jsonResponse, ResqlityErrorResponse.class);
-                    String errorMessage = ResqlityHelpers.ParseErrors(resqlityErrorResponse.getErrors());
+                    String errorMessage = ResqlityHelpers.tryGetHttpErrors(urlConnection.getErrorStream());
                     response.setSuccess(false);
                     response.setMessage(errorMessage);
 
                 } else {
-                    jsonResponse = "";
+                    response.setSuccess(false);
+                    response.setMessage(null);
                 }
                 urlConnection.connect();
 
@@ -210,5 +188,6 @@ public class SelectQuery extends BaseFilterableQuery {
         t.join();
         return response;
     }
+
 
 }

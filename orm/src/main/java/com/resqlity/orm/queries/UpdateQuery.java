@@ -76,14 +76,17 @@ public class UpdateQuery extends BaseFilterableQuery {
     }
 
     public void Execute() throws Exception {
-        if (whereRootClause != null)
-            CompleteWhere();
 
-        if (updateModel.getModel() == null || updateModel.getModel().isEmpty())
-            throw new Exception("Invalid Operation");
+        Execute(false);
     }
 
     public void Execute(boolean useTransaction) throws Exception {
+        if (updateModel.getModel() == null || updateModel.getModel().isEmpty())
+            throw new Exception("Invalid Operation");
+
+        if (whereRootClause != null)
+            CompleteWhere();
+
         updateModel.setUseTransaction(useTransaction);
         Execute();
     }

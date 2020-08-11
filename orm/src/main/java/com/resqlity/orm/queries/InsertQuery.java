@@ -5,12 +5,10 @@ import com.resqlity.orm.consts.Endpoints;
 import com.resqlity.orm.helpers.JsonHelper;
 import com.resqlity.orm.helpers.ResqlityHelpers;
 import com.resqlity.orm.models.querymodels.InsertModel;
-import com.resqlity.orm.models.responses.ResqlityErrorResponse;
 import com.resqlity.orm.models.responses.ResqlitySimpleResponse;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
@@ -57,53 +55,30 @@ public class InsertQuery extends BaseInsertQuery {
                 getTableSchema(),
                 true,
                 Data);
-        String data = JsonHelper.Serialize(insertModel); //data to post
         final ResqlitySimpleResponse response = new ResqlitySimpleResponse("", false);
 
         Runnable insertRequest = () -> {
-            OutputStream out = null;
-            String jsonResponse = "";
             try {
-                URL url = new URL(Endpoints.INSERT_URL);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setDoInput(true);
-                urlConnection.setDoOutput(true);
-                urlConnection.setRequestProperty("ApiKey", dbContext.getApiKey());
-                urlConnection.setRequestProperty("TableName", getTableName());
-                urlConnection.setRequestProperty("TableSchema", getTableSchema());
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-                OutputStream os = urlConnection.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, StandardCharsets.UTF_8));
-                writer.write(data);
-                writer.flush();
-                writer.close();
-                os.close();
-
+                HttpURLConnection urlConnection = ResqlityHelpers.getHttpURLConnection(
+                        JsonHelper.Serialize(insertModel),
+                        "POST",
+                        Endpoints.INSERT_URL,
+                        ResqlityHelpers.getDefaultHeaders(dbContext.getApiKey(), getTableName(), getTableSchema()),
+                        true,
+                        true);
                 int responseCode = urlConnection.getResponseCode();
-
                 if (responseCode == HttpsURLConnection.HTTP_CREATED) {
-                    String line;
-                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    while ((line = br.readLine()) != null) {
-                        jsonResponse += line;
-                    }
-                    ResqlitySimpleResponse t = (ResqlitySimpleResponse) JsonHelper.Deserialize(jsonResponse, response.getClass());
+                    ResqlitySimpleResponse t = ResqlityHelpers.getResqlitySimpleResponse(urlConnection.getInputStream());
                     response.setMessage(t.getMessage());
                     response.setSuccess(t.isSuccess());
                 } else if (responseCode == HttpsURLConnection.HTTP_BAD_REQUEST) {
-                    String line;
-                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream()));
-                    while ((line = br.readLine()) != null) {
-                        jsonResponse += line;
-                    }
-                    ResqlityErrorResponse resqlityErrorResponse = JsonHelper.Deserialize(jsonResponse, ResqlityErrorResponse.class);
-                    String errorMessage = ResqlityHelpers.ParseErrors(resqlityErrorResponse.getErrors());
+                    InputStream errorStream = urlConnection.getErrorStream();
+                    String errorMessage = ResqlityHelpers.tryGetHttpErrors(errorStream);
                     response.setSuccess(false);
                     response.setMessage(errorMessage);
                 } else {
-                    jsonResponse = "";
+                    response.setSuccess(false);
+                    response.setMessage(null);
                 }
                 urlConnection.connect();
 
@@ -118,6 +93,7 @@ public class InsertQuery extends BaseInsertQuery {
         return response;
 
     }
+
 
 }
 
