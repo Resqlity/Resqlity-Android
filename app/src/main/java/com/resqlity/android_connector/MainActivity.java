@@ -22,6 +22,18 @@ public class MainActivity extends AppCompatActivity {
 
         ResqlityContext context = new ResqlityContext("trImnXg/L5zHICePLhkak1AFd3XKy6uur7fiCuCA/yc=");
         try {
+            ResqlityResponse<List<Customers>> selectResponse = context.Select(Customers.class)
+                    .Select("firstName")
+                    .Select("lastName")
+                    .Where("firstName", "Berkay", Comparator.Equal)
+                    .And("lastName", "YALÇIN", Comparator.Equal)
+                    .Query()
+                    .PageBy(1, 10)
+                    .OrderBy("firstName", true)
+                    .Query()
+                    .Execute();
+
+
             ResqlitySimpleResponse insertResponse = context.Insert(Customers.class)
                     .Insert(new Customers("Berkay",
                                     "YALÇIN",
@@ -39,13 +51,6 @@ public class MainActivity extends AppCompatActivity {
                                     "İstanbul",
                                     "İstanbul",
                                     "34000"))
-                    .Execute();
-            ResqlityResponse<List<Customers>> response = context
-                    .Select(Customers.class)
-                    .PageBy()
-                    .Select("firstName")
-                    .Where("firstName", "aaron", Comparator.Equal)
-                    .Query()
                     .Execute();
 
             ResqlityResponse<Integer> deleteResponse = context

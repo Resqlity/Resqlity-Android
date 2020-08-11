@@ -41,6 +41,14 @@ public class InsertQuery extends BaseInsertQuery {
         return this;
     }
 
+    public InsertQuery Insert(List<Object> data) throws ResqlityDbException {
+        for (Object t :
+                data) {
+            Insert(t);
+        }
+        return this;
+    }
+
     public InsertQuery Insert(Object data) throws ResqlityDbException {
 
         HashMap<String, Object> values = new HashMap<>();
