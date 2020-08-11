@@ -145,6 +145,15 @@ public class SelectQuery extends BaseFilterableQuery {
     }
 
     public <T> ResqlityResponse<T> Execute() throws ResqlityDbException {
+        return Execute(false, false);
+    }
+
+    public <T> ResqlityResponse<T> Execute(boolean useCache, boolean flushCache) throws ResqlityDbException {
+        if (flushCache && !useCache)
+            throw new ResqlityDbException("Flush Cache Needs Use Cache");
+
+        selectModel.setFlushCache(flushCache);
+        selectModel.setUseCache(useCache);
         CompleteOrderBy();
         if (whereRootClause != null)
             CompleteWhere();
@@ -189,7 +198,7 @@ public class SelectQuery extends BaseFilterableQuery {
         try {
             t.join();
         } catch (InterruptedException e) {
-            throw new ResqlityDbException(e.getMessage(),e);
+            throw new ResqlityDbException(e.getMessage(), e);
         }
         return response;
     }

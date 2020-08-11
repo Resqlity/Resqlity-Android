@@ -18,6 +18,16 @@ public class SelectModel extends BaseModel {
     private long maxResultCount;
     private boolean useCache;
 
+    public boolean isFlushCache() {
+        return flushCache;
+    }
+
+    public void setFlushCache(boolean flushCache) {
+        this.flushCache = flushCache;
+    }
+
+    private boolean flushCache;
+
     public SelectModel(String apiKey, String tableName, String tableSchema) {
         super(apiKey, tableName, tableSchema);
         selectedColumns = new ArrayList<>();

@@ -12,6 +12,7 @@ import com.resqlity.orm.models.responses.ResqlityResponse;
 import com.resqlity.orm.models.responses.ResqlitySimpleResponse;
 
 import java.util.List;
+import java.util.Timer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,16 +23,21 @@ public class MainActivity extends AppCompatActivity {
 
         ResqlityContext context = new ResqlityContext("trImnXg/L5zHICePLhkak1AFd3XKy6uur7fiCuCA/yc=");
         try {
+            long start = System.nanoTime();
+
             ResqlityResponse<List<Customers>> selectResponse = context.Select(Customers.class)
-                    .Select("firstName")
-                    .Select("lastName")
-                    .Where("firstName", "Berkay", Comparator.Equal)
-                    .And("lastName", "YALÇIN", Comparator.Equal)
-                    .Query()
-                    .PageBy(1, 10)
+//                    .Select("firstName")
+//                    .Select("lastName")
+//                    .Where("firstName", "Berkay", Comparator.Equal)
+//                    .And("lastName", "YALÇIN", Comparator.Equal)
+//                    .Query()
+                    .PageBy(1, 100000)
                     .OrderBy("firstName", true)
                     .Query()
-                    .Execute();
+                    .Execute(true, false);
+            long finish = System.nanoTime();
+            long timeElapsed = finish - start;
+            double seconds = (double) timeElapsed / 1_000_000_000.0;
 
 
             ResqlitySimpleResponse insertResponse = context.Insert(Customers.class)
