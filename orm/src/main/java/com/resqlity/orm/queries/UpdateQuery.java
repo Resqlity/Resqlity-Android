@@ -1,13 +1,20 @@
 package com.resqlity.orm.queries;
 
 import com.resqlity.orm.ResqlityContext;
+import com.resqlity.orm.consts.Endpoints;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.functions.join.JoinFunction;
+import com.resqlity.orm.helpers.JsonHelper;
+import com.resqlity.orm.helpers.ResqlityHelpers;
 import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.models.querymodels.UpdateModel;
+import com.resqlity.orm.models.responses.ResqlityResponse;
 import com.resqlity.orm.queryobjects.update.UpdateQueryObject;
 
+import java.net.HttpURLConnection;
 import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class UpdateQuery extends BaseFilterableQuery {
     UpdateModel updateModel;
@@ -76,18 +83,48 @@ public class UpdateQuery extends BaseFilterableQuery {
     }
 
     public void Execute() throws Exception {
-
         Execute(false);
     }
 
-    public void Execute(boolean useTransaction) throws Exception {
+    public ResqlityResponse<Integer> Execute(boolean useTransaction) throws Exception {
         if (updateModel.getModel() == null || updateModel.getModel().isEmpty())
             throw new Exception("Invalid Operation");
 
         if (whereRootClause != null)
             CompleteWhere();
-
         updateModel.setUseTransaction(useTransaction);
-        Execute();
+        final ResqlityResponse<Integer> response = new ResqlityResponse<Integer>(null, false);
+        Runnable insertRequest = () -> {
+            try {
+                HttpURLConnection urlConnection = ResqlityHelpers.getHttpURLConnection(
+                        JsonHelper.Serialize(updateModel),
+                        "PUT",
+                        Endpoints.UPDATE_URL,
+                        ResqlityHelpers.getDefaultHeaders(dbContext.getApiKey(), getTableName(), getTableSchema()),
+                        true,
+                        true);
+                int responseCode = urlConnection.getResponseCode();
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    ResqlityResponse<Integer> t = ResqlityHelpers.getResqlityResponse(urlConnection.getInputStream(), response.getClass());
+                    response.setMessage(t.getMessage());
+                    response.setSuccess(t.isSuccess());
+                    response.setData(t.getData());
+                } else if (responseCode == HttpsURLConnection.HTTP_BAD_REQUEST) {
+                    String errorMessage = ResqlityHelpers.tryGetHttpErrors(urlConnection.getErrorStream());
+                    response.setSuccess(false);
+                    response.setMessage(errorMessage);
+                } else {
+                    response.setSuccess(false);
+                    response.setMessage(null);
+                }
+            } catch (Exception ignored) {
+            }
+
+        };
+
+        Thread t = new Thread(insertRequest);
+        t.start();
+        t.join();
+        return response;
     }
 }

@@ -9,42 +9,39 @@ public abstract class JoinFunction {
     protected BaseFilterableQuery baseQuery;
     protected JoinClauseModel joinClauseModel;
     protected Class<?> parentClass;
+
     public JoinFunction(BaseFilterableQuery baseQuery, JoinClauseModel joinClauseModel, Class<?> parentClass) {
         this.baseQuery = baseQuery;
         this.joinClauseModel = joinClauseModel;
-        this.parentClass=parentClass;
+        this.parentClass = parentClass;
     }
 
     public abstract JoinFunction ChildInnerJoin(Class<?> joinClass,
-                                           String fieldName,
-                                           String parentFieldName,
-                                           Comparator comparator) throws NoSuchFieldException;
-
-    public abstract JoinFunction ChildLeftJoin(Class<?> joinClass,
-                                          String fieldName,
-                                          String parentFieldName,
-                                          Comparator comparator) throws NoSuchFieldException;
-
-    public abstract JoinFunction ChildRightJoin(Class<?> joinClass,
-                                           String fieldName,
-                                           String parentFieldName,
-                                           Comparator comparator) throws NoSuchFieldException;
-
-    public abstract JoinFunction ChildLeftOuterJoin(Class<?> joinClass,
-                                               String fieldName,
-                                               String parentFieldName,
-                                               Comparator comparator) throws NoSuchFieldException;
-
-    public abstract JoinFunction ChildRightOuterJoin(Class<?> joinClass,
                                                 String fieldName,
                                                 String parentFieldName,
                                                 Comparator comparator) throws NoSuchFieldException;
 
-    public abstract BaseFilterableQuery Query();
+    public abstract JoinFunction ChildLeftJoin(Class<?> joinClass,
+                                               String fieldName,
+                                               String parentFieldName,
+                                               Comparator comparator) throws NoSuchFieldException;
 
-//    public void Execute() throws Exception {
-//        baseQuery.Execute();
-//    }
+    public abstract JoinFunction ChildRightJoin(Class<?> joinClass,
+                                                String fieldName,
+                                                String parentFieldName,
+                                                Comparator comparator) throws NoSuchFieldException;
+
+    public abstract JoinFunction ChildLeftOuterJoin(Class<?> joinClass,
+                                                    String fieldName,
+                                                    String parentFieldName,
+                                                    Comparator comparator) throws NoSuchFieldException;
+
+    public abstract JoinFunction ChildRightOuterJoin(Class<?> joinClass,
+                                                     String fieldName,
+                                                     String parentFieldName,
+                                                     Comparator comparator) throws NoSuchFieldException;
+
+    public abstract BaseFilterableQuery Query();
 
     protected JoinClauseModel getJoinClauseModel(String tableName,
                                                  String tableSchema,

@@ -17,6 +17,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -29,6 +30,14 @@ public class InsertQuery extends BaseInsertQuery {
     public InsertQuery(Class<?> tableClass, ResqlityContext context) {
         super(tableClass, context);
         Data = new ArrayList<Object>();
+    }
+
+    public InsertQuery Insert(Object... data) throws Exception {
+        for (Object t :
+                data) {
+            Insert(t);
+        }
+        return this;
     }
 
     public InsertQuery Insert(Object data) throws Exception {
