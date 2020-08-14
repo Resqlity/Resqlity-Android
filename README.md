@@ -30,7 +30,7 @@ In this process, every feedback from **Android and iOS Developers** will further
 |--|--|--|
 | Querying | <center>:heavy_check_mark:</center> |<center>:heavy_check_mark:</center>|
 | Caching| <center>:heavy_check_mark:</center> |<center>:heavy_check_mark:</center>|
-| Push Notification| <center>:heavy_check_mark:</center> |<center>:x:</center>|
+| Push Notification| <center>:heavy_check_mark:</center> |<center>:heavy_check_mark:</center>|
 | Real-Time Database| <center>:heavy_check_mark:</center> |<center>:x:</center>|
 | In-App Searching| <center>:heavy_check_mark:</center> |<center>:x:</center>|
 | Cloud-Storage| <center>:x:</center> |<center>:x:</center>|
