@@ -35,16 +35,15 @@ public class MainActivity extends AppCompatActivity {
 //                    .Query()
 //                    .PageBy(1, 10)
 //                    .Execute(true, true);
-//            ResqlityResponse<List<Customers>> selectResponse = context.Select(Customers.class)
-////                    .Select("firstName")
-////                    .Select("lastName")
-////                    .Where("firstName", "Berkay", Comparator.Equal)
-////                    .And("lastName", "YALÇIN", Comparator.Equal)
-////                    .Query()
-//                    .PageBy(1, 100000)
-//                    .OrderBy("firstName", true)
-//                    .Query()
-//                    .Execute(true, false);
+        try {
+            ResqlityResponse<List<Customers>> selectResponse = context.Select(Customers.class)
+                    .PageBy(1, 5000)
+                    .OrderBy("firstName", true)
+                    .Query()
+                    .Execute(true, false);
+        } catch (ResqlityDbException e) {
+            e.printStackTrace();
+        }
 ////            long finish = System.nanoTime();
 ////            long timeElapsed = finish - start;
 ////            double seconds = (double) timeElapsed / 1_000_000_000.0;
@@ -59,28 +58,28 @@ public class MainActivity extends AppCompatActivity {
 //            customers.add(customer4);
 //
 //
-        try {
-            ResqlitySimpleResponse insertResponse = context.Insert(Customers.class)
-                    .Insert(new Customers("Berkay",
-                                    "YALÇIN",
-                                    "905534787057",
-                                    "berkay.yalcin20hotmail.com",
-                                    "Saka",
-                                    "İstanbul",
-                                    "İstanbul",
-                                    "34000"),
-                            new Customers("Latif",
-                                    "ATÇI",
-                                    "905534787057",
-                                    "latif800gmailcom",
-                                    "Sefa",
-                                    "İstanbul",
-                                    "İstanbul",
-                                    "34000"))
-                    .Execute();
-        } catch (ResqlityDbException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            ResqlitySimpleResponse insertResponse = context.Insert(Customers.class)
+//                    .Insert(new Customers("Berkay",
+//                                    "YALÇIN",
+//                                    "905534787057",
+//                                    "berkay.yalcin20hotmail.com",
+//                                    "Saka",
+//                                    "İstanbul",
+//                                    "İstanbul",
+//                                    "34000"),
+//                            new Customers("Latif",
+//                                    "ATÇI",
+//                                    "905534787057",
+//                                    "latif800gmailcom",
+//                                    "Sefa",
+//                                    "İstanbul",
+//                                    "İstanbul",
+//                                    "34000"))
+//                    .Execute();
+//        } catch (ResqlityDbException e) {
+//            e.printStackTrace();
+//        }
 //
 //            ResqlityResponse<Integer> deleteResponse = context
 //                    .Delete(Customers.class)

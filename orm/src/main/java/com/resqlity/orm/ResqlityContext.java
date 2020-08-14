@@ -6,6 +6,7 @@ import android.content.Context;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.resqlity.orm.consts.Endpoints;
 import com.resqlity.orm.helpers.JsonHelper;
 import com.resqlity.orm.inapp.BaseMessage;
 import com.resqlity.orm.inapp.MessageType;
@@ -71,7 +72,7 @@ public class ResqlityContext {
     }
 
     private void Connect(String apiKey) throws IOException, URISyntaxException {
-        WebSocketClient client = new WebSocketClient(new URI("ws://10.0.2.2:55391/realtime?apiKey=" + apiKey)) {
+        WebSocketClient client = new WebSocketClient(new URI(Endpoints.WEBSOCKETCLIENT + apiKey)) {
             @Override
             public void onOpen(ServerHandshake handshakedata) {
             }

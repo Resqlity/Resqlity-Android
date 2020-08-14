@@ -5,18 +5,14 @@ import java.util.List;
 
 public class ResqlityErrorResponse {
     private int status;
-    private String title;
     private String type;
-    private String traceId;
-    private Object errors;
+    private String message;
 
-    public Object getErrors() {
-        return errors;
+    public String getMessage() {
+        return message;
     }
 
-    public void setErrors(Object errors) {
-        this.errors = errors;
-    }
+
 
     public int getStatus() {
         return status;
@@ -26,13 +22,7 @@ public class ResqlityErrorResponse {
         this.status = status;
     }
 
-    public String getTitle() {
-        return title;
-    }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getType() {
         return type;
@@ -42,11 +32,4 @@ public class ResqlityErrorResponse {
         this.type = type;
     }
 
-    public String getTraceId() {
-        return traceId;
-    }
-
-    public void setTraceId(String traceId) {
-        this.traceId = traceId;
-    }
 }

@@ -56,7 +56,7 @@ public class ResqlityHelpers {
             jsonResponse += line;
         }
         ResqlityErrorResponse resqlityErrorResponse = JsonHelper.Deserialize(jsonResponse, ResqlityErrorResponse.class);
-        return ResqlityHelpers.ParseErrors(resqlityErrorResponse.getErrors());
+        return resqlityErrorResponse.getMessage();
     }
 
     public static ResqlitySimpleResponse getResqlitySimpleResponse(InputStream inputStream) throws IOException {

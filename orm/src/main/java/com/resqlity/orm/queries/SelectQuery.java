@@ -225,9 +225,9 @@ public class SelectQuery extends BaseFilterableQuery {
     }
 
     /**
-     * @param useCache Specify to use cache
+     * @param useCache   Specify to use cache
      * @param flushCache Specify to flush cache
-     * @param <T> Data Type
+     * @param <T>        Data Type
      * @return ResqlityResponse With T Data
      * @throws ResqlityDbException
      */
