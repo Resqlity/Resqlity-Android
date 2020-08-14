@@ -1,14 +1,16 @@
 apply plugin: 'com.android.library'
+apply plugin: 'signing'
 
 apply plugin: 'maven-publish'
 def githubProperties = new Properties()
 githubProperties.load(new FileInputStream(rootProject.file("local.properties")))
 def getVersionName = { ->
-    return "1.0.1" // Replace with version Name
+    return "1.0.0" // Replace with version Name
 }
 def getArtificatId = { ->
     return "orm" // Replace with library name ID
 }
+
 publishing {
     publications {
         release(MavenPublication) {
@@ -30,7 +32,7 @@ publishing {
                     }
                 }
             }
-            groupId 'com.resqlity.orm' // Replace with group ID
+            groupId 'com.resqlity'
             artifactId getArtificatId()
             version getVersionName()
             artifact("$buildDir/outputs/aar/${getArtificatId()}-release.aar")
@@ -60,7 +62,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0"
+        versionName getVersionName()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
