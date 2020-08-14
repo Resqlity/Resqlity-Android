@@ -1,5 +1,54 @@
 apply plugin: 'com.android.library'
 
+apply plugin: 'maven-publish'
+def githubProperties = new Properties()
+githubProperties.load(new FileInputStream(rootProject.file("local.properties")))
+def getVersionName = { ->
+    return "1.0.1" // Replace with version Name
+}
+def getArtificatId = { ->
+    return "orm" // Replace with library name ID
+}
+publishing {
+    publications {
+        release(MavenPublication) {
+            pom {
+                name='Resqlity Android Library'
+                description='Resqlity.Com Android Connector Library'
+                url='https://resqlity.com'
+                licenses {
+                    license {
+                        name = 'The MIT Licence'
+                        url = 'https://github.com/Resqlity/Resqlity-Android/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'berkayalcin'
+                        name = 'Berkay YALCIN'
+                        email = 'yalcinberkaycom@gmail.com'
+                    }
+                }
+            }
+            groupId 'com.resqlity.orm' // Replace with group ID
+            artifactId getArtificatId()
+            version getVersionName()
+            artifact("$buildDir/outputs/aar/${getArtificatId()}-release.aar")
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/resqlity/resqlity-android")
+            credentials {
+                username = githubProperties['gpr.usr'] ?: System.getenv("GPR_USER")
+                password = githubProperties['gpr.key'] ?: System.getenv("GPR_API_KEY")
+            }
+        }
+    }
+}
+
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.1"

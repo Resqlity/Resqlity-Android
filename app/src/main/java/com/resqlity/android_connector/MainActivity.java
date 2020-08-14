@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 //                    .Execute(true, true);
         try {
             ResqlityResponse<List<Customers>> selectResponse = context.Select(Customers.class)
-                    .PageBy(1, 5000)
+                    .PageBy(1, 2500)
                     .OrderBy("firstName", true)
                     .Query()
                     .Execute(true, false);
