@@ -105,7 +105,6 @@ ResqlityResponse<Integer> deleteResponse = context.Delete(Customers.class)
 	.Execute(true); // Use Transaction : true
 ```
 
-<center><strong><a href="/wiki">For More Information See Resqlity-Android Wiki</a></strong></center>
 
 
 ## ❤️&nbsp; Community and Contributions
