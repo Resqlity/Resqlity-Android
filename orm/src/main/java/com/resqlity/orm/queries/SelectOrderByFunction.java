@@ -12,6 +12,9 @@ public class SelectOrderByFunction extends OrderByFunction {
         query = baseQuery;
     }
 
+    /**
+     * @return SelectQuery
+     */
     @Override
     public SelectQuery Query() {
         query.CompleteOrderBy();

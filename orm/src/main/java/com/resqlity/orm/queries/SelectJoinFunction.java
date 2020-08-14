@@ -17,30 +17,70 @@ public class SelectJoinFunction extends JoinFunction {
         query = baseQuery;
     }
 
+    /**
+     * @@param joinClass       Class to join
+     * @@param fieldName       Field to compare
+     * @@param parentFieldName Parent field to compare with child
+     * @@param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
+     * @@return
+     * @@throws ResqlityDbException
+     */
     @Override
     public SelectJoinFunction ChildInnerJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         Join(joinClass, fieldName, parentFieldName, comparator, JoinType.INNER);
         return this;
     }
 
+    /**
+     * @@param joinClass       Class to join
+     * @@param fieldName       Field to compare
+     * @@param parentFieldName Parent field to compare with child
+     * @@param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
+     * @@return
+     * @@throws ResqlityDbException
+     */
     @Override
     public SelectJoinFunction ChildLeftJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         Join(joinClass, fieldName, parentFieldName, comparator, JoinType.LEFT);
         return this;
     }
 
+    /**
+     * @@param joinClass       Class to join
+     * @@param fieldName       Field to compare
+     * @@param parentFieldName Parent field to compare with child
+     * @@param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
+     * @@return
+     * @@throws ResqlityDbException
+     */
     @Override
     public SelectJoinFunction ChildRightJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         Join(joinClass, fieldName, parentFieldName, comparator, JoinType.RIGHT);
         return this;
     }
 
+    /**
+     * @@param joinClass       Class to join
+     * @@param fieldName       Field to compare
+     * @@param parentFieldName Parent field to compare with child
+     * @@param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
+     * @@return
+     * @@throws ResqlityDbException
+     */
     @Override
     public SelectJoinFunction ChildLeftOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         Join(joinClass, fieldName, parentFieldName, comparator, JoinType.LEFT_OUTER);
         return this;
     }
 
+    /**
+     * @@param joinClass       Class to join
+     * @@param fieldName       Field to compare
+     * @@param parentFieldName Parent field to compare with child
+     * @@param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
+     * @@return
+     * @@throws ResqlityDbException
+     */
     @Override
     public SelectJoinFunction ChildRightOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         Join(joinClass, fieldName, parentFieldName, comparator, JoinType.RIGHT_OUTER);
