@@ -46,7 +46,7 @@ The [Resqlity-Android](https://github.com/resqlity/resqlity-android) repository 
 Just Get New Instance Of ResqlityContext
 
 ```java
-ResqlityContext context = new ResqlityContext("YOURAPIKEY");
+ResqlityContext context = new ResqlityContext("YOURAPIKEY",Context,PushNotificationIconResourceCode);
 ```
 
 **Get Entities**
