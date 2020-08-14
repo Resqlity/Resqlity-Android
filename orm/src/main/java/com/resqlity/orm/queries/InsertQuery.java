@@ -33,6 +33,11 @@ public class InsertQuery extends BaseInsertQuery {
         Data = new ArrayList<Object>();
     }
 
+    /**
+     * @param data Data Args To Add
+     * @return Insert Query
+     * @throws ResqlityDbException
+     */
     public InsertQuery Insert(Object... data) throws ResqlityDbException {
         for (Object t :
                 data) {
@@ -40,7 +45,11 @@ public class InsertQuery extends BaseInsertQuery {
         }
         return this;
     }
-
+    /**
+     * @param data Data List To Add
+     * @return Insert Query
+     * @throws ResqlityDbException
+     */
     public InsertQuery Insert(List<Object> data) throws ResqlityDbException {
         for (Object t :
                 data) {
@@ -48,7 +57,11 @@ public class InsertQuery extends BaseInsertQuery {
         }
         return this;
     }
-
+    /**
+     * @param data Data To Add
+     * @return Insert Query
+     * @throws ResqlityDbException
+     */
     public InsertQuery Insert(Object data) throws ResqlityDbException {
 
         HashMap<String, Object> values = new HashMap<>();
@@ -71,6 +84,10 @@ public class InsertQuery extends BaseInsertQuery {
     }
 
 
+    /**
+     * @return ResqlitySimpleResponse
+     * @throws ResqlityDbException
+     */
     public ResqlitySimpleResponse Execute() throws ResqlityDbException {
         String urlString = Endpoints.INSERT_URL; // URL to call
         InsertModel insertModel = new InsertModel(dbContext.getApiKey(),

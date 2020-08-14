@@ -28,13 +28,13 @@ public class MainActivity extends AppCompatActivity {
             context.Select(Customers.class)
                     .Select("firstName")
                     .Select("lastName")
-                    .Where("firstName","berkay",Comparator.Equal)
-                    .Where("firstName",null,Comparator.IsNull)
+                    .Where("firstName", "berkay", Comparator.Equal)
+                    .Where("firstName", null, Comparator.IsNull)
                     .Query()
-                    .OrderBy("firstName",false)
+                    .OrderBy("firstName", false)
                     .Query()
-                    .PageBy(1,10)
-                    .Execute(true,true);
+                    .PageBy(1, 10)
+                    .Execute(true, true);
             ResqlityResponse<List<Customers>> selectResponse = context.Select(Customers.class)
 //                    .Select("firstName")
 //                    .Select("lastName")
@@ -48,11 +48,11 @@ public class MainActivity extends AppCompatActivity {
 //            long finish = System.nanoTime();
 //            long timeElapsed = finish - start;
 //            double seconds = (double) timeElapsed / 1_000_000_000.0;
-            List<Customers> customers=new ArrayList<>();
-            Customers customer1=new Customers("Jone", "Doe", "90xxxxxxxx", "jone.doe@gmail.com", "Wolf Street", "NY", "NY", "x");
-            Customers customer2=new Customers("Jone", "Doe", "90xxxxxxxx", "jone.doe@gmail.com", "Wolf Street", "NY", "NY", "x");
-            Customers customer3=new Customers("Jone", "Doe", "90xxxxxxxx", "jone.doe@gmail.com", "Wolf Street", "NY", "NY", "x");
-            Customers customer4=new Customers("Jone", "Doe", "90xxxxxxxx", "jone.doe@gmail.com", "Wolf Street", "NY", "NY", "x");
+            List<Customers> customers = new ArrayList<>();
+            Customers customer1 = new Customers("Jone", "Doe", "90xxxxxxxx", "jone.doe@gmail.com", "Wolf Street", "NY", "NY", "x");
+            Customers customer2 = new Customers("Jone", "Doe", "90xxxxxxxx", "jone.doe@gmail.com", "Wolf Street", "NY", "NY", "x");
+            Customers customer3 = new Customers("Jone", "Doe", "90xxxxxxxx", "jone.doe@gmail.com", "Wolf Street", "NY", "NY", "x");
+            Customers customer4 = new Customers("Jone", "Doe", "90xxxxxxxx", "jone.doe@gmail.com", "Wolf Street", "NY", "NY", "x");
             customers.add(customer1);
             customers.add(customer2);
             customers.add(customer3);

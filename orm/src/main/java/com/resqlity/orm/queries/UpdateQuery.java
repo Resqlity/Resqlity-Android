@@ -25,6 +25,12 @@ public class UpdateQuery extends BaseFilterableQuery {
         updateModel = new UpdateModel(context.getApiKey(), getTableName(), getTableSchema());
     }
 
+    /**
+     * @param fieldName Field Name To Update
+     * @param value     Value To Set
+     * @return UpdateQuery
+     * @throws ResqlityDbException
+     */
     public UpdateQuery Update(String fieldName, Object value) throws ResqlityDbException {
         List<UpdateQueryObject> updateQueryObjects = updateModel.getModel();
         String columnName = getPropertyName(fieldName);
@@ -38,6 +44,13 @@ public class UpdateQuery extends BaseFilterableQuery {
         return this;
     }
 
+    /**
+     * @param fieldName Field Name To Apply Condition
+     * @param compareTo Value To Compare
+     * @param comparator Comparator (such as Comparator.Equal,Comparator.NotEqual)
+     * @return UpdateWhereFunction
+     * @throws ResqlityDbException
+     */
     @Override
     public UpdateWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
         WhereClauseModel root = new WhereClauseModel(super.getTableName(), super.getTableSchema(), super.getPropertyName(fieldName), compareTo, comparator);
@@ -83,10 +96,20 @@ public class UpdateQuery extends BaseFilterableQuery {
         throw new ResqlityDbException("Not Implemented");
     }
 
-    public void Execute() throws ResqlityDbException {
-        Execute(false);
+
+    /**
+     * @return ResqlityResponse With Affected Rows
+     * @throws ResqlityDbException
+     */
+    public ResqlityResponse<Integer> Execute() throws ResqlityDbException {
+        return Execute(false);
     }
 
+    /**
+     * @param useTransaction Specify To Use Transaction
+     * @return ResqlityResponse With Affected Rows
+     * @throws ResqlityDbException
+     */
     public ResqlityResponse<Integer> Execute(boolean useTransaction) throws ResqlityDbException {
         if (updateModel.getModel() == null || updateModel.getModel().isEmpty())
             throw new ResqlityDbException("Invalid Operation");

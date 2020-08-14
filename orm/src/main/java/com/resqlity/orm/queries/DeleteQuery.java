@@ -37,6 +37,13 @@ public class DeleteQuery extends BaseFilterableQuery {
         deleteModel = new DeleteModel(dbContext.getApiKey(), getTableName(), getTableSchema());
     }
 
+    /**
+     * @param fieldName  Field Name To Apply Condition
+     * @param compareTo  Value To Compare
+     * @param comparator Comparator (such as Comparator.Equal,Comparator.NotEqual)
+     * @return DeleteWhereFunction
+     * @throws ResqlityDbException
+     */
     @Override
     public DeleteWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
         WhereClauseModel root = null;
@@ -83,10 +90,19 @@ public class DeleteQuery extends BaseFilterableQuery {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @return ResqlityResponse With Affected Rows
+     * @throws ResqlityDbException
+     */
     public ResqlityResponse<Integer> Execute() throws ResqlityDbException {
         return Execute(false);
     }
 
+    /**
+     * @param useTransaction Specify To Use Transaction
+     * @return ResqlityResponse With Affected Rows
+     * @throws ResqlityDbException
+     */
     public ResqlityResponse<Integer> Execute(boolean useTransaction) throws ResqlityDbException {
         if (whereRootClause != null)
             CompleteWhere();
