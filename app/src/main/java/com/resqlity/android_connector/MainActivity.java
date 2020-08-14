@@ -59,24 +59,28 @@ public class MainActivity extends AppCompatActivity {
 //            customers.add(customer4);
 //
 //
-//            ResqlitySimpleResponse insertResponse = context.Insert(Customers.class)
-//                    .Insert(new Customers("Berkay",
-//                                    "YALÇIN",
-//                                    "905534787057",
-//                                    "berkay.yalcin20hotmail.com",
-//                                    "Saka",
-//                                    "İstanbul",
-//                                    "İstanbul",
-//                                    "34000"),
-//                            new Customers("Latif",
-//                                    "ATÇI",
-//                                    "905534787057",
-//                                    "latif800gmailcom",
-//                                    "Sefa",
-//                                    "İstanbul",
-//                                    "İstanbul",
-//                                    "34000"))
-//                    .Execute();
+        try {
+            ResqlitySimpleResponse insertResponse = context.Insert(Customers.class)
+                    .Insert(new Customers("Berkay",
+                                    "YALÇIN",
+                                    "905534787057",
+                                    "berkay.yalcin20hotmail.com",
+                                    "Saka",
+                                    "İstanbul",
+                                    "İstanbul",
+                                    "34000"),
+                            new Customers("Latif",
+                                    "ATÇI",
+                                    "905534787057",
+                                    "latif800gmailcom",
+                                    "Sefa",
+                                    "İstanbul",
+                                    "İstanbul",
+                                    "34000"))
+                    .Execute();
+        } catch (ResqlityDbException e) {
+            e.printStackTrace();
+        }
 //
 //            ResqlityResponse<Integer> deleteResponse = context
 //                    .Delete(Customers.class)
