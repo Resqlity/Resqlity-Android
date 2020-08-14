@@ -45,8 +45,8 @@ public class UpdateQuery extends BaseFilterableQuery {
     }
 
     /**
-     * @param fieldName Field Name To Apply Condition
-     * @param compareTo Value To Compare
+     * @param fieldName  Field Name To Apply Condition
+     * @param compareTo  Value To Compare
      * @param comparator Comparator (such as Comparator.Equal,Comparator.NotEqual)
      * @return UpdateWhereFunction
      * @throws ResqlityDbException
@@ -137,6 +137,9 @@ public class UpdateQuery extends BaseFilterableQuery {
                     String errorMessage = ResqlityHelpers.tryGetHttpErrors(urlConnection.getErrorStream());
                     response.setSuccess(false);
                     response.setMessage(errorMessage);
+                } else if (responseCode == HttpsURLConnection.HTTP_UNAUTHORIZED) {
+                    response.setSuccess(false);
+                    response.setMessage("Unauthorized Access");
                 } else {
                     response.setSuccess(false);
                     response.setMessage(null);

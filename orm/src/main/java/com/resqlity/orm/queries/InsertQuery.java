@@ -116,7 +116,12 @@ public class InsertQuery extends BaseInsertQuery {
                     String errorMessage = ResqlityHelpers.tryGetHttpErrors(errorStream);
                     response.setSuccess(false);
                     response.setMessage(errorMessage);
-                } else {
+                }
+                else if(responseCode==HttpsURLConnection.HTTP_UNAUTHORIZED){
+                    response.setSuccess(false);
+                    response.setMessage("Unauthorized Access");
+                }
+                else {
                     response.setSuccess(false);
                     response.setMessage(null);
                 }
