@@ -41,6 +41,72 @@ In this process, every feedback from **Android and iOS Developers** will further
 
 The [Resqlity-Android](https://github.com/resqlity/resqlity-android) repository provides a **Resqlity Android Library** to quick-start your development. Visit the official [Resqlity-Android Documentation](https://resqlity.com/documentation/android) to find out how to use the Resqlity for starting your own awesome project.
 
+## Examples
+
+Just Get New Instance Of ResqlityContext
+
+```java
+	ResqlityContext context = new ResqlityContext("YOURAPIKEY");
+```
+
+**Get Entities**
+
+```java
+	ResqlityResponse<List<Customers>> customers	= 
+		context.Select(Customers.class)
+		.Select("firstName")
+		.Select("lastName")
+		.Select("phone","email","city","zipCode")
+		.Where("firstName","berkay",Comparator.Equal)
+		.Or("firstName",null,Comparator.IsNull)
+		.Where("birthDate","1990-08-01",Comparator.GreatherThan)
+		.Query() 		// Get Base Query
+		.OrderBy("firstName",true)
+		.ThenBy("lastName",false)
+		.Query()		// Get Base Query
+		.PageBy(1,10) 	// Page 1, Page Size 10
+		.Execute(true,false); // Use Cache : true , Flush Cache : false
+```
+**Insert & Bulk Insert**
+```java
+List<Customers> customers=new ArrayList<>();  
+Customers customer1=new Customers("Jone", "Doe", "90xxxxxxxx", "jone.doe@gmail.com", "Wolf Street", "NY", "NY", "x");  
+Customers customer2=new Customers("Jone", "Doe", "90xxxxxxxx", "jone.doe@gmail.com", "Wolf Street", "NY", "NY", "x");  
+Customers customer3=new Customers("Jone", "Doe", "90xxxxxxxx", "jone.doe@gmail.com", "Wolf Street", "NY", "NY", "x");  
+Customers customer4=new Customers("Jone", "Doe", "90xxxxxxxx", "jone.doe@gmail.com", "Wolf Street", "NY", "NY", "x");
+
+customers.add(customer3);
+customers.add(customer4);
+	
+ResqlitySimpleResponse insertResponse = context.Insert(Customers.class)
+	.Insert(customer1)
+	.Insert(customer2)
+	.Insert(customers)
+	.Execute();
+```
+**Update Entities**
+```java
+	ResqlityResponse<Integer> updateResponse = context.Update(Customers.class)
+		.Update("firstName","John")
+		.Update("lastName","Doe")
+		.Where("firstName","Berkay",Comparator.Equal)
+		.And("lastName",null,Comparator.IsNotNull)
+		.Query()
+		.Execute(true); // Use Transaction : true
+```
+**Delete Entities**
+
+```java
+	ResqlityResponse<Integer> deleteResponse = context.Delete(Customers.class)
+		.Where("firstName","John",Comparator.NotEqual)
+		.Or("firstName","Berkay",Comparator.Equal)
+		.And("lastName",null,Comparator.IsNotNull)
+		.Query()
+		.Execute(true); // Use Transaction : true
+```
+
+<center><strong><a href="/wiki">For More Information See Resqlity-Android Wiki</a></strong></center>
+
 
 ## ❤️&nbsp; Community and Contributions
 
