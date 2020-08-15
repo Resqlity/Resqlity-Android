@@ -18,7 +18,7 @@ In this process, every feedback from **Android and iOS Developers** will further
 
 ## Introduction
 
-[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) [![GitHub release](https://img.shields.io/github/release/Naereen/StrapDown.js.svg)](https://GitHub.com/Resqlity/Resqlity-Android/releases/) [![On Bintray](https://img.shields.io/badge/On-Bintray-<COLOR>.svg)](https://bintray.com/yalcinberkay/Resqlity-Android/)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) [![GitHub release](https://img.shields.io/github/release/Resqlity/Resqlity-Android.svg)](https://GitHub.com/Resqlity/Resqlity-Android/releases/) [![On Bintray](https://img.shields.io/badge/On-Bintray-<COLOR>.svg)](https://bintray.com/yalcinberkay/Resqlity-Android/)
 
 
 [Resqlity-Android](https://resqlity.com/) is **android connector library** for Resqlity that provides relational database, real-time database, cache storage, in-app search, push-notification for software.
