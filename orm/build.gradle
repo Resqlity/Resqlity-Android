@@ -6,101 +6,7 @@ apply plugin: 'signing'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
-def getVersion = "1.0.1"
-def getArtifactId = 'orm'
-def getGroupId = 'com.resqlity'
-def getWebsiteUrl = 'https://resqlity.com'
-def getVcsUrl = 'https://github.com/Resqlity/Resqlity-Android.git'
-def getIssueTrackerUrl = 'https://github.com/Resqlity/Resqlity-Android/issues'
-def getRepoName = 'Resqlity-Android'
-def getPackageName = 'Resqlity-Android'
-def getVersionDescription = 'Resqlity Android Micro-ORM Library'
-def getLicence = 'MIT'
-def getLicenceUrl = 'https://github.com/Resqlity/Resqlity-Android/blob/master/LICENSE'
-def getDescription = 'Resqlity Android Micro-ORM Library'
 
-
-def localProperties = new Properties()
-localProperties.load(new FileInputStream(rootProject.file("local.properties")))
-
-bintray {
-    user = localProperties['user']
-    key =  localProperties['apiKey']
-    pkg {
-        repo = getRepoName
-        name = getPackageName
-        licenses = [getLicence]
-        vcsUrl = getVcsUrl
-        websiteUrl = getWebsiteUrl
-        version {
-            released = new Date()
-            name = getVersion
-            desc = getDescription
-        }
-        desc = getDescription
-        issueTrackerUrl = getIssueTrackerUrl
-        labels = ['micro-orm', 'api-library', 'resqlity-android']
-        publicDownloadNumbers = true
-        githubRepo = 'resqlity/resqlity-android'
-        githubReleaseNotesFile = 'CHANGELOG.md'
-    }
-    publications = ['release']
-
-}
-
-def pomConfig = {
-    licenses {
-        license {
-            name getLicence
-            url getLicenceUrl
-            distribution "repo"
-        }
-    }
-    developers {
-        developer {
-            id "yalcinberkay"
-            name "BERKAY YALCIN"
-            email "yalcinberkaycom@gmail.com"
-        }
-    }
-}
-
-task sourceJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier "sources"
-}
-
-task androidSourcesJar(type: Jar) {
-    archiveClassifier.set('sources')
-    from android.sourceSets.main.java.srcDirs
-}
-
-artifacts {
-    archives sourceJar
-    archives androidSourcesJar
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-                artifact sourceJar
-                artifact androidSourcesJar
-                pom.withXml {
-                    def root = asNode()
-                    root.appendNode('description', getVersionDescription())
-                    root.appendNode('name', getPackageName())
-                    root.appendNode('url', getWebsiteUrl())
-                    root.children().last() + pomConfig
-                }
-                groupId getGroupId
-                artifactId getArtifactId
-                version getVersion
-            }
-        }
-    }
-}
 
 
 android {
@@ -114,7 +20,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
-        versionName getVersion
+        versionName '1.0.0'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
