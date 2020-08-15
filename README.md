@@ -1,4 +1,5 @@
 
+
 <br/>
 <p align="center">
     <a href="https://resqlity.com/" target="_blank">
@@ -17,7 +18,7 @@ In this process, every feedback from **Android and iOS Developers** will further
 
 ## Introduction
 
-[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) [![GitHub release](https://img.shields.io/github/release/Naereen/StrapDown.js.svg)](https://GitHub.com/Resqlity/Resqlity-Android/releases/) <a href="https://www.buymeacoffee.com/yalcinberkay" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>[![Become A Patron](https://img.shields.io/badge/BecomeAPatron-OnFly-<COLOR>.svg)](https://www.patreon.com/bePatron?u=39301374)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) [![GitHub release](https://img.shields.io/github/release/Naereen/StrapDown.js.svg)](https://GitHub.com/Resqlity/Resqlity-Android/releases/) [![On Bintray](https://img.shields.io/badge/On-Bintray-<COLOR>.svg)](https://bintray.com/yalcinberkay/Resqlity-Android/)
 
 
 [Resqlity-Android](https://resqlity.com/) is **android connector library** for Resqlity that provides relational database, real-time database, cache storage, in-app search, push-notification for software.
