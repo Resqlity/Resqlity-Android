@@ -23,6 +23,37 @@ In this process, every feedback from **Android and iOS Developers** will further
 
 [Resqlity-Android](https://resqlity.com/) is **android connector library** for Resqlity that provides relational database, real-time database, cache storage, in-app search, push-notification for software.
 
+## Get Started
+### Android Installation
+
+Step 1 : 
+Add it in your root build.gradle at the end of repositories:
+
+```kotlin
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
+	}
+}
+```
+
+**Step 2.**  Add the dependency
+```kotlin
+dependencies {
+        implementation 'com.github.Resqlity:Resqlity-Android:Tag'
+}
+```
+**Final Step.** Create Resqlity Context
+```java
+ResqlityContext context = new ResqlityContext(
+	/*Resqlity API Key*/
+	"trImnXg/L5zHICePLhkak1AFd3XKy6uur7fiCuCA/yc=",
+	/*Activity Context*/
+	this,
+	/*Icon Resource Value*/
+	R.drawable.ic_launcher_background);
+```
 ## Features
 
 
