@@ -1,5 +1,6 @@
 
 
+
 <br/>
 <p align="center">
     <a href="https://resqlity.com/" target="_blank">
@@ -26,16 +27,16 @@ In this process, every feedback from **Android and iOS Developers** will further
 
 
 
-| Feature Name  | Resqlity | Resqlity-Android Library | 
-|--|--|--|
-| Querying | <center>:heavy_check_mark:</center> |<center>:heavy_check_mark:</center>|
-| Caching| <center>:heavy_check_mark:</center> |<center>:heavy_check_mark:</center>|
-| Push Notification| <center>:heavy_check_mark:</center> |<center>:heavy_check_mark:</center>|
-| Real-Time Database| <center>:heavy_check_mark:</center> |<center>:x:</center>|
-| In-App Searching| <center>:heavy_check_mark:</center> |<center>:x:</center>|
-| Cloud-Storage| <center>:x:</center> |<center>:x:</center>|
-| Ruleset Based Operations| <center>:x:</center> |<center>:x:</center>|
-| In-App Authorization| <center>:x:</center> |<center>:x:</center>|
+| Feature Name  | Resqlity | Resqlity-Android Library| Resqlity-IOS | 
+|--|--|--|--|
+| Querying | <center>:heavy_check_mark:</center> |<center>:heavy_check_mark:</center>|<center>:x:</center>|
+| Caching| <center>:heavy_check_mark:</center> |<center>:heavy_check_mark:</center>|<center>:x:</center>|
+| Push Notification| <center>:heavy_check_mark:</center> |<center>:heavy_check_mark:</center>|<center>:x:</center>|
+| Real-Time Database| <center>:heavy_check_mark:</center> |<center>:x:</center>|<center>:x:</center>|
+| In-App Searching| <center>:heavy_check_mark:</center> |<center>:x:</center>|<center>:x:</center>|
+| Cloud-Storage| <center>:x:</center> |<center>:x:</center>|<center>:x:</center>|
+| Ruleset Based Operations| <center>:x:</center> |<center>:x:</center>|<center>:x:</center>|
+| In-App Authorization| <center>:x:</center> |<center>:x:</center>|<center>:x:</center>|
 
 ## 🚀&nbsp; Installation and Documentation
 
