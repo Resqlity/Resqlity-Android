@@ -1,15 +1,70 @@
+plugins {
+    id "com.jfrog.bintray" version "1.8.1"
+}
 apply plugin: 'com.android.library'
 apply plugin: 'signing'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
-def githubProperties = new Properties()
-githubProperties.load(new FileInputStream(rootProject.file("local.properties")))
-def getVersionName = { ->
-    return "1.0.1" // Replace with version Name
+
+def getVersion = "1.0.1"
+def getArtifactId = 'orm'
+def getGroupId = 'com.resqlity'
+def getWebsiteUrl = 'https://resqlity.com'
+def getVcsUrl = 'https://github.com/Resqlity/Resqlity-Android.git'
+def getIssueTrackerUrl = 'https://github.com/Resqlity/Resqlity-Android/issues'
+def getRepoName = 'Resqlity-Android'
+def getPackageName = 'Resqlity-Android'
+def getVersionDescription = 'Resqlity Android Micro-ORM Library'
+def getLicence = 'MIT'
+def getLicenceUrl = 'https://github.com/Resqlity/Resqlity-Android/blob/master/LICENSE'
+def getDescription = 'Resqlity Android Micro-ORM Library'
+
+
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
+bintray {
+    user = localProperties['user']
+    key =  localProperties['apiKey']
+    pkg {
+        repo = getRepoName
+        name = getPackageName
+        licenses = [getLicence]
+        vcsUrl = getVcsUrl
+        websiteUrl = getWebsiteUrl
+        version {
+            released = new Date()
+            name = getVersion
+            desc = getDescription
+        }
+        desc = getDescription
+        issueTrackerUrl = getIssueTrackerUrl
+        labels = ['micro-orm', 'api-library', 'resqlity-android']
+        publicDownloadNumbers = true
+        githubRepo = 'resqlity/resqlity-android'
+        githubReleaseNotesFile = 'CHANGELOG.md'
+    }
+    publications = ['release']
+
 }
-def getArtificatId = { ->
-    return "orm" // Replace with library name ID
+
+def pomConfig = {
+    licenses {
+        license {
+            name getLicence
+            url getLicenceUrl
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "yalcinberkay"
+            name "BERKAY YALCIN"
+            email "yalcinberkaycom@gmail.com"
+        }
+    }
 }
+
 task sourceJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier "sources"
@@ -20,50 +75,33 @@ task androidSourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
 }
 
-afterEvaluate {
+artifacts {
+    archives sourceJar
+    archives androidSourcesJar
+}
 
+afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
                 from components.release
-                pom {
-                    name = 'Resqlity Android Library'
-                    description = 'Resqlity.Com Android Connector Library'
-                    url = 'https://resqlity.com'
-                    licenses {
-                        license {
-                            name = 'The MIT Licence'
-                            url = 'https://github.com/Resqlity/Resqlity-Android/blob/master/LICENSE'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id = 'berkayalcin'
-                            name = 'Berkay YALCIN'
-                            email = 'yalcinberkaycom@gmail.com'
-                        }
-                    }
-                }
-                groupId 'com.resqlity'
-                artifactId getArtificatId()
-                version getVersionName()
+                artifact sourceJar
                 artifact androidSourcesJar
-//            artifact("$buildDir/outputs/aar/${getArtificatId()}-release.aar")
-            }
-        }
-        repositories {
-            maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/resqlity/resqlity-android")
-                credentials {
-                    username = githubProperties['gpr.usr'] ?: System.getenv("GPR_USER")
-                    password = githubProperties['gpr.key'] ?: System.getenv("GPR_API_KEY")
+                pom.withXml {
+                    def root = asNode()
+                    root.appendNode('description', getVersionDescription())
+                    root.appendNode('name', getPackageName())
+                    root.appendNode('url', getWebsiteUrl())
+                    root.children().last() + pomConfig
                 }
+                groupId getGroupId
+                artifactId getArtifactId
+                version getVersion
             }
         }
     }
-
 }
+
 
 android {
     compileSdkVersion 30
@@ -76,7 +114,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
-        versionName getVersionName()
+        versionName getVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
