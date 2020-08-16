@@ -48,6 +48,9 @@ public class ExampleInstrumentedTest {
                 .InnerJoin(Customers.class, "customerId", "customerId", Comparator.Equal)
                 .Select("customerFirstName")
                 .Select("customerLastName")
+                .Where("customerFirstName", "berkay", Comparator.Equal)
+                .And("customerLastName", "yalçın", Comparator.Equal)
+                .Parent()
                 .Query()
                 .Execute(true, true);
     }

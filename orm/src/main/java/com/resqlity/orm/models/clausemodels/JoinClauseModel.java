@@ -16,6 +16,16 @@ public class JoinClauseModel {
     private JoinType joinType;
     private List<JoinClauseModel> joins;
 
+    public List<WhereClauseModel> getWheres() {
+        return wheres;
+    }
+
+    public void setWheres(List<WhereClauseModel> wheres) {
+        this.wheres = wheres;
+    }
+
+    private List<WhereClauseModel> wheres;
+
     public List<SelectColumn> getColumns() {
         return columns;
     }
@@ -38,7 +48,8 @@ public class JoinClauseModel {
         this.parentColumnName = parentColumnName;
         this.comparator = comparator;
         this.joinType = joinType;
-        this.columns=new ArrayList<>();
+        this.columns = new ArrayList<>();
+        wheres = new ArrayList<>();
     }
 
     public String getTableName() {

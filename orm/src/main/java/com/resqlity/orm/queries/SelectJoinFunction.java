@@ -5,6 +5,7 @@ import com.resqlity.orm.enums.JoinType;
 import com.resqlity.orm.exceptions.ResqlityDbException;
 import com.resqlity.orm.functions.join.JoinFunction;
 import com.resqlity.orm.models.clausemodels.JoinClauseModel;
+import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.queryobjects.select.SelectColumn;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class SelectJoinFunction extends JoinFunction {
     SelectQuery query;
     List<SelectColumn> selectColumns;
     SelectJoinFunction parent;
+
 
     public SelectJoinFunction(SelectQuery baseQuery, JoinClauseModel joinClauseModel, Class<?> baseClass, SelectJoinFunction parent) {
         super(baseQuery, joinClauseModel, baseClass);
@@ -96,30 +98,35 @@ public class SelectJoinFunction extends JoinFunction {
         return Join(joinClass, fieldName, parentFieldName, comparator, JoinType.RIGHT_OUTER);
     }
 
+    @Override
+    public SelectJoinWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
+        WhereClauseModel root = new WhereClauseModel(query.getTableName(baseClass), query.getTableSchema(baseClass), query.getPropertyName(baseClass, fieldName), compareTo, comparator);
+        whereRootClause = root;
+        return new SelectJoinWhereFunction(root, query, this);
+    }
+
     private SelectJoinFunction Join(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator, JoinType type) throws ResqlityDbException {
-//        JoinClauseModel head = joinClauseModel;
-//        List<JoinClauseModel> joins = head.getJoins();
         JoinClauseModel joinClauseModel = getJoinClauseModel(query.getTableName(joinClass),
                 query.getTableSchema(joinClass),
                 query.getPropertyName(joinClass, fieldName),
                 query.getPropertyName(baseClass, parentFieldName),
                 comparator,
                 type);
-//        joins.add(joinClauseModel);
-//        head.setJoins(joins);
         return new SelectJoinFunction(query, joinClauseModel, joinClass, this);
     }
 
-    protected void CompleteChildFunction(JoinClauseModel model) {
+    protected void CompleteChildFunction(SelectJoinFunction model) {
+        if (model.whereRootClause != null)
+            model.CompleteWhere();
         List<JoinClauseModel> joinClauseModels = joinClauseModel.getJoins();
-        joinClauseModels.add(model);
+        joinClauseModels.add(model.joinClauseModel);
         joinClauseModel.setJoins(joinClauseModels);
     }
 
     public SelectJoinFunction Parent() throws ResqlityDbException {
         if (parent == null)
             throw new ResqlityDbException("Parent NULL");
-        CompleteChildFunction(joinClauseModel);
+        CompleteChildFunction(this);
         return parent;
     }
 
@@ -127,10 +134,20 @@ public class SelectJoinFunction extends JoinFunction {
     public SelectQuery Query() {
         SelectJoinFunction iterator = this;
         while (iterator.parent != null) {
-            iterator.parent.CompleteChildFunction(iterator.joinClauseModel);
+            iterator.parent.CompleteChildFunction(iterator);
             iterator = iterator.parent;
         }
+        if (whereRootClause != null)
+            CompleteWhere();
         query.CompleteJoin();
         return query;
+    }
+
+    @Override
+    protected void CompleteWhere() {
+        List<WhereClauseModel> whereClauseModels = joinClauseModel.getWheres();
+        whereClauseModels.add(whereRootClause);
+        joinClauseModel.setWheres(whereClauseModels);
+        whereRootClause = null;
     }
 }

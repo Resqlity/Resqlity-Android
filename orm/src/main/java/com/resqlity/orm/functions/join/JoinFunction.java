@@ -3,13 +3,16 @@ package com.resqlity.orm.functions.join;
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.JoinType;
 import com.resqlity.orm.exceptions.ResqlityDbException;
+import com.resqlity.orm.functions.where.WhereFunction;
 import com.resqlity.orm.models.clausemodels.JoinClauseModel;
+import com.resqlity.orm.models.clausemodels.WhereClauseModel;
 import com.resqlity.orm.queries.BaseFilterableQuery;
 
 public abstract class JoinFunction {
     protected BaseFilterableQuery baseQuery;
     protected JoinClauseModel joinClauseModel;
     protected Class<?> baseClass;
+    protected WhereClauseModel whereRootClause;
 
     public JoinFunction(BaseFilterableQuery baseQuery, JoinClauseModel joinClauseModel, Class<?> parentClass) {
         this.baseQuery = baseQuery;
@@ -42,7 +45,15 @@ public abstract class JoinFunction {
                                                 String parentFieldName,
                                                 Comparator comparator) throws ResqlityDbException;
 
+    public abstract WhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException;
+
     public abstract BaseFilterableQuery Query();
+
+    protected abstract void CompleteWhere();
+
+    public Class<?> getBaseClass() {
+        return baseClass;
+    }
 
     protected JoinClauseModel getJoinClauseModel(String tableName,
                                                  String tableSchema,
