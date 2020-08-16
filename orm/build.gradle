@@ -6,6 +6,46 @@ apply plugin: 'signing'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.resqlity'
+                artifactId = 'orm'
+                version = '1.0'
+                pom {
+                    name = 'Resqlity Android'
+                    description = 'Resqlity Android Micro ORM Library'
+                    url = 'https://www.resqlity.com'
+
+                    licenses {
+                        license {
+                            name = 'MIT'
+                            url = 'https://github.com/Resqlity/Resqlity-Android/blob/development/LICENSE'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'yalcinberkay'
+                            name = 'Berkay YALÇIN'
+                            email = 'yalcinberkaycom@gmail.com'
+                        }
+                    }
+                }
+            }
+            debug(MavenPublication) {
+                // Applies the component for the debug build variant.
+                from components.debug
+
+                groupId = 'com.resqlity'
+                artifactId = 'final-debug'
+                version = '1.0'
+            }
+        }
+    }
+}
 repositories {
     mavenCentral()
     maven { url 'https://jitpack.io' }
