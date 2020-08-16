@@ -15,23 +15,25 @@ import com.resqlity.orm.models.querymodels.SelectModel;
 import com.resqlity.orm.models.responses.ResqlityResponse;
 import com.resqlity.orm.queryobjects.select.SelectColumn;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+/**
+ * Select Query
+ */
 public class SelectQuery extends BaseFilterableQuery {
     private SelectModel selectModel;
 
+    public SelectModel getSelectModel() {
+        return selectModel;
+    }
+
+    /**
+     * @param tableClass Table Class
+     * @param dbContext  Resqlity Context
+     */
     public SelectQuery(Class<?> tableClass, ResqlityContext dbContext) {
         super(tableClass, dbContext);
         selectModel = new SelectModel(dbContext.getApiKey(), getTableName(), getTableSchema());
@@ -64,6 +66,13 @@ public class SelectQuery extends BaseFilterableQuery {
         return new SelectWhereFunction(root, this);
     }
 
+    /**
+     * @param tableClass Table Class
+     * @param field      Field Name
+     * @param isAsc      Is Ascending
+     * @return SelectOrderByFunction
+     * @throws ResqlityDbException
+     */
     public SelectOrderByFunction OrderBy(Class<?> tableClass, String field, boolean isAsc) throws ResqlityDbException {
         if (selectModel.getOrderBy() == null) {
             selectModel.setOrderBy(new OrderByClauseModel(getTableName(tableClass), getTableSchema(tableClass), getPropertyName(field), isAsc));
@@ -77,7 +86,7 @@ public class SelectQuery extends BaseFilterableQuery {
     /**
      * @param field Field To Order
      * @param isAsc Is Ascending
-     * @return
+     * @return SelectOrderByFunction
      * @throws ResqlityDbException
      */
     public SelectOrderByFunction OrderBy(String field, boolean isAsc) throws ResqlityDbException {
@@ -89,7 +98,7 @@ public class SelectQuery extends BaseFilterableQuery {
      * @param fieldName       Field to compare
      * @param parentFieldName Parent field to compare with child
      * @param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
-     * @return
+     * @return SelectJoinFunction
      * @throws ResqlityDbException
      */
     @Override
@@ -102,7 +111,7 @@ public class SelectQuery extends BaseFilterableQuery {
      * @param fieldName       Field to compare
      * @param parentFieldName Parent field to compare with child
      * @param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
-     * @return
+     * @return SelectJoinFunction
      * @throws ResqlityDbException
      */
     @Override
@@ -115,7 +124,7 @@ public class SelectQuery extends BaseFilterableQuery {
      * @param fieldName       Field to compare
      * @param parentFieldName Parent field to compare with child
      * @param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
-     * @return
+     * @return SelectJoinFunction
      * @throws ResqlityDbException
      */
     @Override
@@ -128,7 +137,7 @@ public class SelectQuery extends BaseFilterableQuery {
      * @param fieldName       Field to compare
      * @param parentFieldName Parent field to compare with child
      * @param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
-     * @return
+     * @return SelectJoinFunction
      * @throws ResqlityDbException
      */
     @Override
@@ -141,7 +150,7 @@ public class SelectQuery extends BaseFilterableQuery {
      * @param fieldName       Field to compare
      * @param parentFieldName Parent field to compare with child
      * @param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
-     * @return
+     * @return SelectJoinFunction
      * @throws ResqlityDbException
      */
     @Override
@@ -149,6 +158,15 @@ public class SelectQuery extends BaseFilterableQuery {
         return Join(joinClass, fieldName, parentFieldName, comparator, JoinType.RIGHT_OUTER);
     }
 
+    /**
+     * @param joinClass       Join Class
+     * @param fieldName       Field Name
+     * @param parentFieldName Parent Field Name
+     * @param comparator      Object Comparator
+     * @param type            Join Type
+     * @return SelectJoinFunction
+     * @throws ResqlityDbException
+     */
     private SelectJoinFunction Join(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator, JoinType type) throws ResqlityDbException {
         String tableName = getTableName(joinClass);
         String tableSchema = getTableSchema(joinClass);
@@ -156,11 +174,13 @@ public class SelectQuery extends BaseFilterableQuery {
         String childColumnName = getPropertyName(joinClass, fieldName);
         JoinClauseModel joinClauseModel = new JoinClauseModel(tableName, tableSchema, childColumnName, parentColumnName, comparator, type);
         lastJoinClause = joinClauseModel;
-        return new SelectJoinFunction(this, joinClauseModel, joinClass);
+        return new SelectJoinFunction(this, joinClauseModel, joinClass, null);
     }
 
 
     /**
+     * Applies Pagination
+     *
      * @return SelectQuery
      */
     public SelectQuery PageBy() {
@@ -168,6 +188,8 @@ public class SelectQuery extends BaseFilterableQuery {
     }
 
     /**
+     * Applies Pagination
+     *
      * @param page Page Index
      * @return
      */
@@ -176,6 +198,8 @@ public class SelectQuery extends BaseFilterableQuery {
     }
 
     /**
+     * Applies Pagination
+     *
      * @param page     Page Index
      * @param pageSize Page Size
      * @return
@@ -185,6 +209,8 @@ public class SelectQuery extends BaseFilterableQuery {
     }
 
     /**
+     * Applies Pagination
+     *
      * @param skipCount      Skip Count
      * @param maxResultCount Page Size
      * @return
@@ -196,6 +222,9 @@ public class SelectQuery extends BaseFilterableQuery {
     }
 
 
+    /**
+     * Completes Linked Where Objects
+     */
     protected void CompleteWhere() {
         List<WhereClauseModel> whereClauseModels = selectModel.getWheres();
         whereClauseModels.add(whereRootClause);
@@ -203,10 +232,16 @@ public class SelectQuery extends BaseFilterableQuery {
         whereRootClause = null;
     }
 
+    /**
+     * Completes Linked Order By object
+     */
     protected void CompleteOrderBy() {
         selectModel.setOrderBy(selectModel.getOrderBy());
     }
 
+    /**
+     * Completes Linked Join Objects
+     */
     @Override
     protected void CompleteJoin() {
         List<JoinClauseModel> joinClauseModels = selectModel.getJoins();
@@ -265,12 +300,10 @@ public class SelectQuery extends BaseFilterableQuery {
                     response.setSuccess(false);
                     response.setMessage(errorMessage);
 
-                }
-                else if(responseCode==HttpsURLConnection.HTTP_UNAUTHORIZED){
+                } else if (responseCode == HttpsURLConnection.HTTP_UNAUTHORIZED) {
                     response.setSuccess(false);
                     response.setMessage("Unauthorized Access");
-                }
-                else {
+                } else {
                     response.setSuccess(false);
                     response.setMessage(null);
                 }

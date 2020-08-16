@@ -15,6 +15,13 @@ public class UpdateWhereFunction extends WhereFunction {
         query = baseQuery;
     }
 
+    /**
+     * @param fieldName  Field Name
+     * @param compareTo  Compare To Value
+     * @param comparator Object Comparator
+     * @return
+     * @throws ResqlityDbException
+     */
     @Override
     public UpdateWhereFunction And(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
         return Where(fieldName, compareTo, comparator, Decision.AND);

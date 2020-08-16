@@ -2,6 +2,9 @@ package com.resqlity.orm.enums;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Condition Decisions
+ */
 public enum Decision {
     @SerializedName("1")
     AND(1),

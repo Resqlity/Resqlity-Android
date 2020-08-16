@@ -25,9 +25,11 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class InsertQuery extends BaseInsertQuery {
     private ArrayList<Object> Data;
-    private Map ttp = new HashMap();
 
-
+    /**
+     * @param tableClass Table Class For Inserting
+     * @param context    ResqlityContext
+     */
     public InsertQuery(Class<?> tableClass, ResqlityContext context) {
         super(tableClass, context);
         Data = new ArrayList<Object>();
@@ -45,6 +47,7 @@ public class InsertQuery extends BaseInsertQuery {
         }
         return this;
     }
+
     /**
      * @param data Data List To Add
      * @return Insert Query
@@ -57,6 +60,7 @@ public class InsertQuery extends BaseInsertQuery {
         }
         return this;
     }
+
     /**
      * @param data Data To Add
      * @return Insert Query
@@ -116,12 +120,10 @@ public class InsertQuery extends BaseInsertQuery {
                     String errorMessage = ResqlityHelpers.tryGetHttpErrors(errorStream);
                     response.setSuccess(false);
                     response.setMessage(errorMessage);
-                }
-                else if(responseCode==HttpsURLConnection.HTTP_UNAUTHORIZED){
+                } else if (responseCode == HttpsURLConnection.HTTP_UNAUTHORIZED) {
                     response.setSuccess(false);
                     response.setMessage("Unauthorized Access");
-                }
-                else {
+                } else {
                     response.setSuccess(false);
                     response.setMessage(null);
                 }
