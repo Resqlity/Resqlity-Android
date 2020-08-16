@@ -29,25 +29,12 @@ import java.util.Map;
 
 public class ResqlityHelpers {
 
-    public static String ParseErrors(Object errors) throws IllegalAccessException {
-        LinkedTreeMap<String, ArrayList<String>> linkedTreeMap = (LinkedTreeMap<String, ArrayList<String>>) errors;
-        StringBuilder globalBuilder = new StringBuilder();
-        for (Map.Entry<String, ArrayList<String>> entry :
-                linkedTreeMap.entrySet()) {
-            List<String> propertyErrors = new ArrayList<>();
-            StringBuilder sb = new StringBuilder();
-
-            for (String item :
-                    entry.getValue()) {
-                sb.append(item);
-                sb.append("\t");
-            }
-            globalBuilder.append(sb.toString());
-            globalBuilder.append("\n");
-        }
-        return globalBuilder.toString();
-    }
-
+    /**
+     * @param errorStream Http Error Stream
+     * @return Formatted Error Message
+     * @throws IOException
+     * @throws IllegalAccessException
+     */
     public static String tryGetHttpErrors(InputStream errorStream) throws IOException, IllegalAccessException {
         String jsonResponse = "";
         String line;
@@ -59,6 +46,11 @@ public class ResqlityHelpers {
         return resqlityErrorResponse.getMessage();
     }
 
+    /**
+     * @param inputStream Http Input Stream
+     * @return ResqlitySimpleResponse
+     * @throws IOException
+     */
     public static ResqlitySimpleResponse getResqlitySimpleResponse(InputStream inputStream) throws IOException {
         String jsonResponse = "";
         String line;
@@ -69,6 +61,13 @@ public class ResqlityHelpers {
         return (ResqlitySimpleResponse) JsonHelper.Deserialize(jsonResponse, ResqlitySimpleResponse.class);
     }
 
+    /**
+     * @param stream Http Input Stream
+     * @param tClass Data Class
+     * @param <T>    Data Type
+     * @return ResqlityResponse with specified type
+     * @throws IOException
+     */
     public static <T> ResqlityResponse<T> getResqlityResponse(InputStream stream, Class<?> tClass) throws IOException {
         String jsonResponse = "";
         String line;
@@ -80,10 +79,23 @@ public class ResqlityHelpers {
         return (ResqlityResponse<T>) JsonHelper.Deserialize(jsonResponse, tClass);
     }
 
+    /**
+     * @param apiKey      Api Key
+     * @param tableName   Base Table Name
+     * @param tableSchema Base Table Schema
+     * @return Returns http headers
+     */
     public static Map<String, String> getDefaultHeaders(String apiKey, String tableName, String tableSchema) {
         return getDefaultHeaders(apiKey, tableName, tableSchema, "application/json");
     }
 
+    /**
+     * @param apiKey      Api Key
+     * @param tableName   Base Table Name
+     * @param tableSchema Base Table Schema
+     * @param contentType Data Content Type
+     * @return Default Http Headers
+     */
     public static Map<String, String> getDefaultHeaders(String apiKey, String tableName, String tableSchema, String contentType) {
         Map<String, String> headers = new Hashtable<>();
         headers.put("ApiKey", apiKey);
@@ -93,6 +105,16 @@ public class ResqlityHelpers {
         return headers;
     }
 
+    /**
+     * @param data     Data To Post
+     * @param method   Http Method
+     * @param uri      Url
+     * @param headers  Headers
+     * @param doInput  Can Input
+     * @param doOutput Can Output
+     * @return HttpUrlConnection
+     * @throws IOException
+     */
     public static HttpURLConnection getHttpURLConnection(String data, String method, String uri, Map<String, String> headers, boolean doInput, boolean doOutput) throws IOException {
         URL url = new URL(uri);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();

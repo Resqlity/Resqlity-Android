@@ -7,6 +7,10 @@ import com.resqlity.orm.models.clausemodels.OrderByClauseModel;
 public class SelectOrderByFunction extends OrderByFunction {
     SelectQuery query;
 
+    /**
+     * @param baseQuery          SelectQuery
+     * @param orderByClauseModel Linked Order By Object
+     */
     public SelectOrderByFunction(SelectQuery baseQuery, OrderByClauseModel orderByClauseModel) {
         super(baseQuery, orderByClauseModel);
         query = baseQuery;
@@ -21,6 +25,13 @@ public class SelectOrderByFunction extends OrderByFunction {
         return query;
     }
 
+    /**
+     * @param tableClass Table Class
+     * @param field      Field to OrderBy
+     * @param isAsc      Is Ascending
+     * @return SelectOrderByFunction
+     * @throws ResqlityDbException
+     */
     @Override
     public SelectOrderByFunction ThenBy(Class<?> tableClass, String field, boolean isAsc) throws ResqlityDbException {
         OrderByClauseModel head = orderByClauseModel;
@@ -31,6 +42,12 @@ public class SelectOrderByFunction extends OrderByFunction {
         return this;
     }
 
+    /**
+     * @param field Field to OrderBy
+     * @param isAsc Is Ascending
+     * @return SelectOrderByFunction
+     * @throws ResqlityDbException
+     */
     @Override
     public SelectOrderByFunction ThenBy(String field, boolean isAsc) throws ResqlityDbException {
         return ThenBy(query.getBaseTableClass(), field, isAsc);

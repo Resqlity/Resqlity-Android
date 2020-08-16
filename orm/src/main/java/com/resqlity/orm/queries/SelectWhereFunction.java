@@ -51,6 +51,14 @@ public class SelectWhereFunction extends WhereFunction {
         return query.Where(fieldName, compareTo, comparator);
     }
 
+    /**
+     * @param fieldName  Field Name
+     * @param compareTo  Compare To Value
+     * @param comparator Object Comparator
+     * @param decision   Condition Decision
+     * @return SelectWhereFunction
+     * @throws ResqlityDbException
+     */
     @Override
     protected SelectWhereFunction Where(String fieldName, Object compareTo, Comparator comparator, Decision decision) throws ResqlityDbException {
         WhereClauseModel head = model;
@@ -62,6 +70,9 @@ public class SelectWhereFunction extends WhereFunction {
         return this;
     }
 
+    /**
+     * @return SelectQuery
+     */
     @Override
     public SelectQuery Query() {
         return query;

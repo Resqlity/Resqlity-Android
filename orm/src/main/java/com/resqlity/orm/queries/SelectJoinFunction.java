@@ -18,6 +18,12 @@ public class SelectJoinFunction extends JoinFunction {
     SelectJoinFunction parent;
 
 
+    /**
+     * @param baseQuery       SelectQuery
+     * @param joinClauseModel Linked Join Object
+     * @param baseClass       Join Class
+     * @param parent          Parent Join Function
+     */
     public SelectJoinFunction(SelectQuery baseQuery, JoinClauseModel joinClauseModel, Class<?> baseClass, SelectJoinFunction parent) {
         super(baseQuery, joinClauseModel, baseClass);
         query = baseQuery;
@@ -25,6 +31,11 @@ public class SelectJoinFunction extends JoinFunction {
         selectColumns = new ArrayList<>();
     }
 
+    /**
+     * @param field Field To Select
+     * @return SelectJoinFunction
+     * @throws ResqlityDbException
+     */
     public SelectJoinFunction Select(String field) throws ResqlityDbException {
         List<SelectColumn> columns = joinClauseModel.getColumns();
         SelectColumn column = new SelectColumn(query.getTableName(baseClass), query.getTableSchema(baseClass), query.getPropertyName(baseClass, field), field);
@@ -38,7 +49,7 @@ public class SelectJoinFunction extends JoinFunction {
      * @param fieldName       Field to compare
      * @param parentFieldName Parent field to compare with child
      * @param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
-     * @return
+     * @return SelectJoinFunction
      * @throws ResqlityDbException
      */
     @Override
@@ -51,7 +62,7 @@ public class SelectJoinFunction extends JoinFunction {
      * @param fieldName       Field to compare
      * @param parentFieldName Parent field to compare with child
      * @param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
-     * @return
+     * @return SelectJoinFunction
      * @throws ResqlityDbException
      */
     @Override
@@ -64,7 +75,7 @@ public class SelectJoinFunction extends JoinFunction {
      * @param fieldName       Field to compare
      * @param parentFieldName Parent field to compare with child
      * @param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
-     * @return
+     * @return SelectJoinFunction
      * @throws ResqlityDbException
      */
     @Override
@@ -77,7 +88,7 @@ public class SelectJoinFunction extends JoinFunction {
      * @param fieldName       Field to compare
      * @param parentFieldName Parent field to compare with child
      * @param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
-     * @return
+     * @return SelectJoinFunction
      * @throws ResqlityDbException
      */
     @Override
@@ -90,7 +101,7 @@ public class SelectJoinFunction extends JoinFunction {
      * @param fieldName       Field to compare
      * @param parentFieldName Parent field to compare with child
      * @param comparator      Comparator such as Comparator.Equal,Comparator.NotEqual
-     * @return
+     * @return SelectJoinFunction
      * @throws ResqlityDbException
      */
     @Override
@@ -98,6 +109,13 @@ public class SelectJoinFunction extends JoinFunction {
         return Join(joinClass, fieldName, parentFieldName, comparator, JoinType.RIGHT_OUTER);
     }
 
+    /**
+     * @param fieldName  Field Name
+     * @param compareTo  Compare To Value
+     * @param comparator Object Comparator
+     * @return SelectJoinWhereFunction
+     * @throws ResqlityDbException
+     */
     @Override
     public SelectJoinWhereFunction Where(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
         WhereClauseModel root = new WhereClauseModel(query.getTableName(baseClass), query.getTableSchema(baseClass), query.getPropertyName(baseClass, fieldName), compareTo, comparator);
@@ -105,6 +123,15 @@ public class SelectJoinFunction extends JoinFunction {
         return new SelectJoinWhereFunction(root, query, this);
     }
 
+    /**
+     * @param joinClass       Join Class
+     * @param fieldName       Field Name
+     * @param parentFieldName Parent Field Name
+     * @param comparator      Object Comparator
+     * @param type            Join Type
+     * @return SelectJoinFunction
+     * @throws ResqlityDbException
+     */
     private SelectJoinFunction Join(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator, JoinType type) throws ResqlityDbException {
         JoinClauseModel joinClauseModel = getJoinClauseModel(query.getTableName(joinClass),
                 query.getTableSchema(joinClass),
@@ -115,6 +142,9 @@ public class SelectJoinFunction extends JoinFunction {
         return new SelectJoinFunction(query, joinClauseModel, joinClass, this);
     }
 
+    /**
+     * @param model Child Join Function
+     */
     protected void CompleteChildFunction(SelectJoinFunction model) {
         if (model.whereRootClause != null)
             model.CompleteWhere();
@@ -123,6 +153,10 @@ public class SelectJoinFunction extends JoinFunction {
         joinClauseModel.setJoins(joinClauseModels);
     }
 
+    /**
+     * @return Parent Function
+     * @throws ResqlityDbException
+     */
     public SelectJoinFunction Parent() throws ResqlityDbException {
         if (parent == null)
             throw new ResqlityDbException("Parent NULL");
@@ -130,6 +164,9 @@ public class SelectJoinFunction extends JoinFunction {
         return parent;
     }
 
+    /**
+     * @return SelectQuery
+     */
     @Override
     public SelectQuery Query() {
         SelectJoinFunction iterator = this;
@@ -143,6 +180,9 @@ public class SelectJoinFunction extends JoinFunction {
         return query;
     }
 
+    /**
+     * Completes Linked Where Object
+     */
     @Override
     protected void CompleteWhere() {
         List<WhereClauseModel> whereClauseModels = joinClauseModel.getWheres();

@@ -2,6 +2,9 @@ package com.resqlity.orm.enums;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Join Type
+ */
 public enum JoinType {
     @SerializedName("1")
     INNER(1),
