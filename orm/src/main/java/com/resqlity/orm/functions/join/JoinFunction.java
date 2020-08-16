@@ -9,38 +9,38 @@ import com.resqlity.orm.queries.BaseFilterableQuery;
 public abstract class JoinFunction {
     protected BaseFilterableQuery baseQuery;
     protected JoinClauseModel joinClauseModel;
-    protected Class<?> parentClass;
+    protected Class<?> baseClass;
 
     public JoinFunction(BaseFilterableQuery baseQuery, JoinClauseModel joinClauseModel, Class<?> parentClass) {
         this.baseQuery = baseQuery;
         this.joinClauseModel = joinClauseModel;
-        this.parentClass = parentClass;
+        this.baseClass = parentClass;
     }
 
-    public abstract JoinFunction ChildInnerJoin(Class<?> joinClass,
-                                                String fieldName,
-                                                String parentFieldName,
-                                                Comparator comparator) throws ResqlityDbException;
+    public abstract JoinFunction InnerJoin(Class<?> joinClass,
+                                           String fieldName,
+                                           String parentFieldName,
+                                           Comparator comparator) throws ResqlityDbException;
 
-    public abstract JoinFunction ChildLeftJoin(Class<?> joinClass,
+    public abstract JoinFunction LeftJoin(Class<?> joinClass,
+                                          String fieldName,
+                                          String parentFieldName,
+                                          Comparator comparator) throws ResqlityDbException;
+
+    public abstract JoinFunction RightJoin(Class<?> joinClass,
+                                           String fieldName,
+                                           String parentFieldName,
+                                           Comparator comparator) throws ResqlityDbException;
+
+    public abstract JoinFunction LeftOuterJoin(Class<?> joinClass,
                                                String fieldName,
                                                String parentFieldName,
                                                Comparator comparator) throws ResqlityDbException;
 
-    public abstract JoinFunction ChildRightJoin(Class<?> joinClass,
+    public abstract JoinFunction RightOuterJoin(Class<?> joinClass,
                                                 String fieldName,
                                                 String parentFieldName,
                                                 Comparator comparator) throws ResqlityDbException;
-
-    public abstract JoinFunction ChildLeftOuterJoin(Class<?> joinClass,
-                                                    String fieldName,
-                                                    String parentFieldName,
-                                                    Comparator comparator) throws ResqlityDbException;
-
-    public abstract JoinFunction ChildRightOuterJoin(Class<?> joinClass,
-                                                     String fieldName,
-                                                     String parentFieldName,
-                                                     Comparator comparator) throws ResqlityDbException;
 
     public abstract BaseFilterableQuery Query();
 

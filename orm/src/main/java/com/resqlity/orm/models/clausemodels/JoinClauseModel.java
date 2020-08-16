@@ -2,6 +2,7 @@ package com.resqlity.orm.models.clausemodels;
 
 import com.resqlity.orm.enums.Comparator;
 import com.resqlity.orm.enums.JoinType;
+import com.resqlity.orm.queryobjects.select.SelectColumn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,16 @@ public class JoinClauseModel {
     private JoinType joinType;
     private List<JoinClauseModel> joins;
 
+    public List<SelectColumn> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<SelectColumn> columns) {
+        this.columns = columns;
+    }
+
+    private List<SelectColumn> columns;
+
     public JoinClauseModel(String tableName,
                            String tableSchema,
                            String columnName,
@@ -27,6 +38,7 @@ public class JoinClauseModel {
         this.parentColumnName = parentColumnName;
         this.comparator = comparator;
         this.joinType = joinType;
+        this.columns=new ArrayList<>();
     }
 
     public String getTableName() {
@@ -54,8 +66,8 @@ public class JoinClauseModel {
     }
 
     public List<JoinClauseModel> getJoins() {
-        if(joins==null)
-            joins=new ArrayList<>();
+        if (joins == null)
+            joins = new ArrayList<>();
         return joins;
     }
 

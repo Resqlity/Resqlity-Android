@@ -156,7 +156,7 @@ public class SelectQuery extends BaseFilterableQuery {
         String childColumnName = getPropertyName(joinClass, fieldName);
         JoinClauseModel joinClauseModel = new JoinClauseModel(tableName, tableSchema, childColumnName, parentColumnName, comparator, type);
         lastJoinClause = joinClauseModel;
-        return new SelectJoinFunction(this, joinClauseModel, joinClass);
+        return new SelectJoinFunction(this, joinClauseModel, joinClass, null);
     }
 
 
@@ -265,12 +265,10 @@ public class SelectQuery extends BaseFilterableQuery {
                     response.setSuccess(false);
                     response.setMessage(errorMessage);
 
-                }
-                else if(responseCode==HttpsURLConnection.HTTP_UNAUTHORIZED){
+                } else if (responseCode == HttpsURLConnection.HTTP_UNAUTHORIZED) {
                     response.setSuccess(false);
                     response.setMessage("Unauthorized Access");
-                }
-                else {
+                } else {
                     response.setSuccess(false);
                     response.setMessage(null);
                 }
