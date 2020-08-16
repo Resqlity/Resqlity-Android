@@ -23,11 +23,19 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/**
+ * Resqlity Context
+ */
 public class ResqlityContext {
     String apiKey;
     Context context;
     int iconCode;
 
+    /**
+     * @param apiKey   Resqlity Api Key
+     * @param context  Activity Context
+     * @param iconCode Icon Code To use In Push Notification
+     */
     public ResqlityContext(String apiKey, Context context, int iconCode) {
         this.apiKey = apiKey;
         this.context = context;
@@ -45,22 +53,41 @@ public class ResqlityContext {
         return apiKey;
     }
 
+    /**
+     * @param obj Query On Class
+     * @return SelectQuery
+     */
     public SelectQuery Select(Class<? extends Object> obj) {
         return new SelectQuery(obj, this);
     }
 
+    /**
+     * @param obj Query On Class
+     * @return UpdateQuery
+     */
     public UpdateQuery Update(Class<? extends Object> obj) {
         return new UpdateQuery(obj, this);
     }
 
+    /**
+     * @param obj Query On Class
+     * @return
+     */
     public DeleteQuery Delete(Class<? extends Object> obj) {
         return new DeleteQuery(obj, this);
     }
 
+    /**
+     * @param obj Query On Class
+     * @return InsertQuery
+     */
     public InsertQuery Insert(Class<? extends Object> obj) {
         return new InsertQuery(obj, this);
     }
 
+    /**
+     * @param notification Notification message
+     */
     private void PushNotification(BaseMessage notification) {
         Notification builder = new NotificationCompat.Builder(context, "ResqlityPushNotificationActivities")
                 .setContentTitle("Hey!")
@@ -71,6 +98,11 @@ public class ResqlityContext {
         notificationManager.notify(1, builder);
     }
 
+    /**
+     * @param apiKey Resqlity API Key
+     * @throws IOException
+     * @throws URISyntaxException
+     */
     private void Connect(String apiKey) throws IOException, URISyntaxException {
         WebSocketClient client = new WebSocketClient(new URI(Endpoints.WEBSOCKETCLIENT + apiKey)) {
             @Override

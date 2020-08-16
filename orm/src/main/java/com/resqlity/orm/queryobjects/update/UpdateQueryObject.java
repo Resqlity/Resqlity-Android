@@ -2,12 +2,21 @@ package com.resqlity.orm.queryobjects.update;
 
 import androidx.annotation.Nullable;
 
+/**
+ * Update Query Key Value Pairs
+ */
 public class UpdateQueryObject {
     private String tableName;
     private String tableSchema;
     private String columnName;
     private Object value;
 
+    /**
+     * @param tableName   Table Name
+     * @param tableSchema Table Schema
+     * @param columnName  Column Name
+     * @param value       Column Value
+     */
     public UpdateQueryObject(String tableName, String tableSchema, String columnName, Object value) {
         this.tableName = tableName;
         this.tableSchema = tableSchema;

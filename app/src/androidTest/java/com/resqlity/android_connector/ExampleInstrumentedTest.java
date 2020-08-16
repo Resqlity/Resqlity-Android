@@ -1,4 +1,4 @@
-package com.resqlity.orm;
+package com.resqlity.android_connector;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.resqlity.orm.test", appContext.getPackageName());
+        assertEquals("com.resqlity.android_connector", appContext.getPackageName());
     }
 }

@@ -2,6 +2,9 @@ package com.resqlity.orm.enums;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Value Comparator
+ */
 public enum Comparator {
     @SerializedName("1")
     Equal(1),

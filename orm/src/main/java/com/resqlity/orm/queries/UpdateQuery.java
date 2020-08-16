@@ -58,31 +58,74 @@ public class UpdateQuery extends BaseFilterableQuery {
         return new UpdateWhereFunction(root, this);
     }
 
+    /**
+     * @param joinClass       Join With Class
+     * @param fieldName       Field Name
+     * @param parentFieldName Parent Class Field Name
+     * @param comparator      Object Comparator
+     * @return
+     * @throws UnsupportedOperationException
+     */
     @Override
     public JoinFunction InnerJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException("Not Implemented");
     }
 
+    /**
+     * @param joinClass       Join With Class
+     * @param fieldName       Field Name
+     * @param parentFieldName Parent Class Field Name
+     * @param comparator      Object Comparator
+     * @return
+     * @throws UnsupportedOperationException
+     */
     @Override
     public JoinFunction LeftJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException("Not Implemented");
     }
 
+    /**
+     * @param joinClass       Join With Class
+     * @param fieldName       Field Name
+     * @param parentFieldName Parent Class Field Name
+     * @param comparator      Object Comparator
+     * @return
+     * @throws UnsupportedOperationException
+     */
     @Override
     public JoinFunction RightJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException("Not Implemented");
     }
 
+    /**
+     * @param joinClass       Join With Class
+     * @param fieldName       Field Name
+     * @param parentFieldName Parent Class Field Name
+     * @param comparator      Object Comparator
+     * @return
+     * @throws UnsupportedOperationException
+     */
     @Override
     public JoinFunction LeftOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException("Not Implemented");
     }
 
+    /**
+     * @param joinClass       Join With Class
+     * @param fieldName       Field Name
+     * @param parentFieldName Parent Class Field Name
+     * @param comparator      Object Comparator
+     * @return
+     * @throws UnsupportedOperationException
+     */
     @Override
     public JoinFunction RightOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException("Not Implemented");
     }
 
+    /**
+     * Completes Linked Where Object
+     */
     @Override
     protected void CompleteWhere() {
         List<WhereClauseModel> whereClauseModels = updateModel.getWheres();
@@ -91,9 +134,12 @@ public class UpdateQuery extends BaseFilterableQuery {
         whereRootClause = null;
     }
 
+    /**
+     * @throws UnsupportedOperationException
+     */
     @Override
     protected void CompleteJoin() throws ResqlityDbException {
-        throw new ResqlityDbException("Not Implemented");
+        throw new UnsupportedOperationException("Not Implemented");
     }
 
 
