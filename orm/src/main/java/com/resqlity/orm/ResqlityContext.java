@@ -10,7 +10,6 @@ import com.resqlity.orm.consts.Endpoints;
 import com.resqlity.orm.helpers.JsonHelper;
 import com.resqlity.orm.inapp.BaseMessage;
 import com.resqlity.orm.inapp.MessageType;
-import com.resqlity.orm.inapp.PushNotification;
 import com.resqlity.orm.queries.DeleteQuery;
 import com.resqlity.orm.queries.InsertQuery;
 import com.resqlity.orm.queries.SelectQuery;
@@ -104,7 +103,7 @@ public class ResqlityContext {
      * @throws URISyntaxException
      */
     private void Connect(String apiKey) throws IOException, URISyntaxException {
-        WebSocketClient client = new WebSocketClient(new URI(Endpoints.WEBSOCKETCLIENT + apiKey)) {
+        WebSocketClient client = new WebSocketClient(new URI(Endpoints.WEB_SOCKET_CLIENT_URL + apiKey)) {
             @Override
             public void onOpen(ServerHandshake handshakedata) {
             }
