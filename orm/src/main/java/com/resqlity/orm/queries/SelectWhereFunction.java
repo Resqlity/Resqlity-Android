@@ -15,32 +15,32 @@ public class SelectWhereFunction extends WhereFunction {
     }
 
     /**
-     * @param fieldName Field Name To Apply Condition
-     * @param compareTo Value To Compare
+     * @param fieldName  Field Name To Apply Condition
+     * @param compareTo  Value To Compare
      * @param comparator Comparator (such as Comparator.Equal,Comparator.NotEqual)
      * @return SelectWhereFunction
      * @throws ResqlityDbException
      */
     @Override
     public SelectWhereFunction And(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
-        return Where(fieldName,compareTo,comparator,Decision.AND);
+        return Where(fieldName, compareTo, comparator, Decision.AND);
     }
 
     /**
-     * @param fieldName Field Name To Apply Condition
-     * @param compareTo Value To Compare
+     * @param fieldName  Field Name To Apply Condition
+     * @param compareTo  Value To Compare
      * @param comparator Comparator (such as Comparator.Equal,Comparator.NotEqual)
      * @return SelectWhereFunction
      * @throws ResqlityDbException
      */
     @Override
     public SelectWhereFunction Or(String fieldName, Object compareTo, Comparator comparator) throws ResqlityDbException {
-        return Where(fieldName,compareTo,comparator,Decision.OR);
+        return Where(fieldName, compareTo, comparator, Decision.OR);
     }
 
     /**
-     * @param fieldName Field Name To Apply Condition
-     * @param compareTo Value To Compare
+     * @param fieldName  Field Name To Apply Condition
+     * @param compareTo  Value To Compare
      * @param comparator Comparator (such as Comparator.Equal,Comparator.NotEqual)
      * @return SelectWhereFunction
      * @throws ResqlityDbException
@@ -51,6 +51,14 @@ public class SelectWhereFunction extends WhereFunction {
         return query.Where(fieldName, compareTo, comparator);
     }
 
+    /**
+     * @param fieldName  Field Name
+     * @param compareTo  Compare To Value
+     * @param comparator Object Comparator
+     * @param decision   Condition Decision
+     * @return SelectWhereFunction
+     * @throws ResqlityDbException
+     */
     @Override
     protected SelectWhereFunction Where(String fieldName, Object compareTo, Comparator comparator, Decision decision) throws ResqlityDbException {
         WhereClauseModel head = model;
@@ -62,13 +70,11 @@ public class SelectWhereFunction extends WhereFunction {
         return this;
     }
 
+    /**
+     * @return SelectQuery
+     */
     @Override
     public SelectQuery Query() {
         return query;
-    }
-
-    public SelectQuery Select(String field) throws ResqlityDbException {
-        query.CompleteWhere();
-        return query.Select(field);
     }
 }

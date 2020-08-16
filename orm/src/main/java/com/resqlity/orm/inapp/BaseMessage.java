@@ -4,10 +4,25 @@ import androidx.annotation.Nullable;
 
 import java.util.Date;
 
+/**
+ * Resqlity WebSocket Base Message
+ */
 public class BaseMessage {
+    /**
+     * Json Message
+     */
     private String message;
+    /**
+     * Message Sent On Date
+     */
     private Date sendDate;
+    /**
+     * Message Type
+     */
     private MessageType type;
+    /**
+     * Is Specified On Table
+     */
     private @Nullable
     String tableName;
 

@@ -29,6 +29,9 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
+/**
+ * Delete Query
+ */
 public class DeleteQuery extends BaseFilterableQuery {
     DeleteModel deleteModel;
 
@@ -52,31 +55,74 @@ public class DeleteQuery extends BaseFilterableQuery {
         return new DeleteWhereFunction(root, this);
     }
 
+    /**
+     * @param joinClass       Join With Class
+     * @param fieldName       Field Name
+     * @param parentFieldName Parent Class Field Name
+     * @param comparator      Object Comparator
+     * @return
+     * @throws UnsupportedOperationException
+     */
     @Override
     public JoinFunction InnerJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @param joinClass       Join With Class
+     * @param fieldName       Field Name
+     * @param parentFieldName Parent Class Field Name
+     * @param comparator      Object Comparator
+     * @return
+     * @throws UnsupportedOperationException
+     */
     @Override
     public JoinFunction LeftJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @param joinClass       Join With Class
+     * @param fieldName       Field Name
+     * @param parentFieldName Parent Class Field Name
+     * @param comparator      Object Comparator
+     * @return
+     * @throws UnsupportedOperationException
+     */
     @Override
     public JoinFunction RightJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @param joinClass       Join With Class
+     * @param fieldName       Field Name
+     * @param parentFieldName Parent Class Field Name
+     * @param comparator      Object Comparator
+     * @return
+     * @throws UnsupportedOperationException
+     */
     @Override
     public JoinFunction LeftOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @param joinClass       Join With Class
+     * @param fieldName       Field Name
+     * @param parentFieldName Parent Class Field Name
+     * @param comparator      Object Comparator
+     * @return
+     * @throws UnsupportedOperationException
+     */
     @Override
     public JoinFunction RightOuterJoin(Class<?> joinClass, String fieldName, String parentFieldName, Comparator comparator) throws ResqlityDbException {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Completes Linked Where Object
+     */
     @Override
     protected void CompleteWhere() {
         List<WhereClauseModel> whereClauseModels = deleteModel.getWheres();
@@ -85,6 +131,9 @@ public class DeleteQuery extends BaseFilterableQuery {
         whereRootClause = null;
     }
 
+    /**
+     * @throws UnsupportedOperationException
+     */
     @Override
     protected void CompleteJoin() throws ResqlityDbException {
         throw new UnsupportedOperationException();
@@ -129,12 +178,10 @@ public class DeleteQuery extends BaseFilterableQuery {
                     String errorMessage = ResqlityHelpers.tryGetHttpErrors(urlConnection.getErrorStream());
                     response.setSuccess(false);
                     response.setMessage(errorMessage);
-                }
-                else if(responseCode==HttpsURLConnection.HTTP_UNAUTHORIZED){
+                } else if (responseCode == HttpsURLConnection.HTTP_UNAUTHORIZED) {
                     response.setSuccess(false);
                     response.setMessage("Unauthorized Access");
-                }
-                else {
+                } else {
                     response.setSuccess(false);
                     response.setMessage(null);
                 }
