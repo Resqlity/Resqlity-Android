@@ -26,6 +26,10 @@ import javax.net.ssl.HttpsURLConnection;
 public class SelectQuery extends BaseFilterableQuery {
     private SelectModel selectModel;
 
+    public SelectModel getSelectModel() {
+        return selectModel;
+    }
+
     /**
      * @param tableClass Table Class
      * @param dbContext  Resqlity Context
