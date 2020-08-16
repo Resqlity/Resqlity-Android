@@ -84,20 +84,43 @@ ResqlityContext context = new ResqlityContext("YOURAPIKEY",Context,PushNotificat
 **Get Entities**
 
 ```java
-ResqlityResponse<List<Customers>> customers	= 
-	context.Select(Customers.class)
-	.Select("firstName")
-	.Select("lastName")
-	.Select("phone","email","city","zipCode")
-	.Where("firstName","berkay",Comparator.Equal)
-	.Or("firstName",null,Comparator.IsNull)
-	.Where("birthDate","1990-08-01",Comparator.GreatherThan)
-	.Query() 		// Get Base Query
-	.OrderBy("firstName",true)
-	.ThenBy("lastName",false)
-	.Query()		// Get Base Query
-	.PageBy(1,10) 	// Page 1, Page Size 10
-	.Execute(true,false); // Use Cache : true , Flush Cache : false
+
+SelectQuery query = context.Select(Orders.class)  
+		// Select OrderId In Orders Class
+        .Select("orderId")  
+        // Join With Staffs Table On staffId = staffId
+        .InnerJoin(Staffs.class, "staffId", "staffId", Comparator.Equal)  
+        // Select firstName in Staffs Class
+        .Select("firstName")  
+        // Select storeId in Staffs Class
+        .Select("storeId")  
+        // Get Query
+        .Query()  
+        // Join Orders With Customers Class On Orders.customerId = Customers.customerId
+        .InnerJoin(Customers.class, "customerId", "customerId", Comparator.Equal)  
+        // Select customerFirstName in Customers Class
+        .Select("customerFirstName")  
+        // Select customerLastName in Customers Class
+        .Select("customerLastName")  
+        // Apply Where Customers Join
+        .Where("customerFirstName", "berkay", Comparator.Equal)  
+        .And("customerLastName", "yalçın", Comparator.Equal)  
+        // Get Join Clause
+        .Parent()  
+        // Get Query
+        .Query()  
+        // Apply Pagination Then Get 10 th Page
+        .PageBy(10)  
+        // Order By orderId
+        // Order By staffId
+        .OrderBy("orderId", true)  
+        .ThenBy("staffId", false)  
+        .Query();  
+ResqlityResponse<List<Orders>> orders = query.Execute(
+		// use cache
+		true,
+		// not flush cache
+		false);
 ```
 **Insert & Bulk Insert**
 ```java
