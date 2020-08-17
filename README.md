@@ -1,6 +1,7 @@
 
 
 
+
 <br/>
 <p align="center">
     <a href="https://resqlity.com/" target="_blank">
@@ -24,6 +25,10 @@ In this process, every feedback from **Android and iOS Developers** will further
 [Resqlity-Android](https://resqlity.com/) is **android connector library** for Resqlity that provides relational database, real-time database, cache storage, in-app search, push-notification for software.
 
 ## Get Started
+
+<center><a href="https://resqlity.com/SignUp">Click here to register to Resqlity and connect the database and get the API key.</a></center>
+
+
 ### Android Installation
 
 Step 1 : 
